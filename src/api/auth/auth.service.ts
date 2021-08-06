@@ -5,9 +5,8 @@ import {
   CognitoUserPool,
   CognitoUserAttribute,
 } from 'amazon-cognito-identity-js';
-import { AuthConfig } from './auth.config';
 import configs from 'src/configs/environments/configs';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 
 
 @Injectable()

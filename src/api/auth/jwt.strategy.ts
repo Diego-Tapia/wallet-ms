@@ -3,7 +3,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { passportJwtSecret } from 'jwks-rsa';
-import { AuthConfig } from './auth.config';
 import configs from 'src/configs/environments/configs';
 import { ConfigType } from '@nestjs/config';
 
