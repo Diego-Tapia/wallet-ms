@@ -17,7 +17,7 @@ export class TransactionModel extends Document {
   hash: string;
 
   @Prop({ type: Types.ObjectId, ref: TokenModel.name, required: true })
-  token: TokenModel | Types.ObjectId;
+  Token: TokenModel | Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: WalletModel.name, required: true })
   walletFrom: WalletModel | Types.ObjectId;
@@ -30,6 +30,10 @@ export class TransactionModel extends Document {
 
   @Prop({ required: true, enum: ['PENDING', 'REJECTED', 'IN_PROGRESS', 'FINISHED', 'CANCELED'] })
   status: string;
+
+  @Prop({ required: true })
+  dniFrom: number;
+
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(TransactionModel);
