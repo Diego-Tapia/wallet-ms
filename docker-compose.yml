@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  app:
+      image: backend-service
+      container_name: backend_service
+      build:
+        context: ./
+        dockerfile: Dockerfile
+      env_file: .env
+      ports: 
+        - 80:3000
+      depends_on: 
+        - mongodb
+      restart: always
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    volumes: 
+      - mongodb:/data/db
+    ports:
+      - 27017:27017
+
+volumes: 
+  mongodb:

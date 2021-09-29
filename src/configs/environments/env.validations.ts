@@ -11,8 +11,9 @@ export default Joi.object({
   SQS_HOST: Joi.string().required(),
   SQS_USER: Joi.string().required(),
   SQS_PASS: Joi.string().required(),
-  COGNITO_USER_POOL_ID : Joi.string().required(),
-  COGNITO_CLIENT_ID : Joi.string().required(),
-  COGNITO_REGION : Joi.string().required(),
-  AUTHORITY : Joi.string().required(),
+  COGNITO_USER_POOL_ID: Joi.string().required(),
+  COGNITO_CLIENT_ID: Joi.string().required(),
+  COGNITO_REGION: Joi.string().required(),
+  AUTHORITY: Joi.string().required(),
+  SECRET: Joi.string().required(),
 });

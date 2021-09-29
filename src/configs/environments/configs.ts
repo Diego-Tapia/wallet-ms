@@ -21,7 +21,9 @@ export default registerAs('configs', () => ({
     user_pool: process.env.COGNITO_USER_POOL_ID,
     client_id: process.env.COGNITO_CLIENT_ID,
     cognito_region: process.env.COGNITO_REGION,
-    authority :`https://cognito-idp.${process.env.COGNITO_REGION}.amazonaws.com/${process.env.COGNITO_USER_POOL_ID}`
+    authority: `https://cognito-idp.${process.env.COGNITO_REGION}.amazonaws.com/${process.env.COGNITO_USER_POOL_ID}`,
   },
-
+  secret:{
+    secret: process.env.SECRET,
+  }
 }));

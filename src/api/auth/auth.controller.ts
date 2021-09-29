@@ -1,30 +1,47 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { BadRequestException, Body, Controller, Inject, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
+import { IUserAuthLoginApplication } from 'src/features/auth/application/login-user/user-login-app.interface';
+import { IUserAuthRegisterApplication } from 'src/features/auth/application/register-user/user-registrer.app.interface';
+import { IUserAuthConfirmApplication } from 'src/features/auth/application/user-confirm/user-confirm-app.interface';
+import { UserAuthTypes } from 'src/features/auth/auth.types';
+import { UserConfirmDTO } from 'src/features/auth/infrastructure/dto/user-confirm.dto';
+import { UserLoginDTO } from 'src/features/auth/infrastructure/dto/user-login.dto';
+import { UserRegisterDTO } from 'src/features/auth/infrastructure/dto/user-register.dto';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    @Inject(UserAuthTypes.APPLICATION.USER_REGISTER)
+    private readonly userAuthRegisterApplication: IUserAuthRegisterApplication,
+    @Inject(UserAuthTypes.APPLICATION.USER_CONFIRM)
+    private readonly userAuthConfirmApplication: IUserAuthConfirmApplication,
+    @Inject(UserAuthTypes.APPLICATION.USER_LOGIN)
+    private readonly userAuthLoginApplication: IUserAuthLoginApplication,
+  ) {}
 
   @Post('register')
-  async register(@Body() registerRequest: { name: string; password: string; email: string }) {
-    return await this.authService.registerUser(registerRequest);
-  }
-
-  @Post('login')
-  async login(@Body() authenticateRequest: { name: string; password: string }) {
+  async register(@Body() userRegisterDTO: UserRegisterDTO) {
     try {
-      return await this.authService.authenticateUser(authenticateRequest);
+      return await this.userAuthRegisterApplication.execute(userRegisterDTO);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
 
+  //{success:true or false , message: "ok",data:[],info:{page:0 offset:0 count:0 limit:0}}
   @Post('confirm')
-  async confirm(@Body() confirmRequest: { username: string; confirmationCode: string }) {
+  async confirm(@Body() userConfirmDTO: UserConfirmDTO) {
     try {
-      return await this.authService.confirmUser(confirmRequest);
+      return await this.userAuthConfirmApplication.execute(userConfirmDTO);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  @Post('login')
+  async login(@Body() userLoginDTO: UserLoginDTO) {
+    try {
+      return await this.userAuthLoginApplication.execute(userLoginDTO);
     } catch (e) {
       throw new BadRequestException(e.message);
     }

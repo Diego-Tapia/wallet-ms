@@ -1,16 +1,23 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './api/auth/auth.module';
-import { AuthorizationController } from './api/authorization/authorization.controller';
-import { AuthorizationService } from './api/authorization/authorization.service';
+import { AuthFeatureModule } from './features/auth/auth.module';
 import { DatabaseModule } from './configs/database/database.module';
 import configs from './configs/environments/configs';
 import envValidations from './configs/environments/env.validations';
 import { TokenFeatureModule } from './features/token/token.module';
+import { TransactionFeatureModule } from './features/transaction/transaction.module';
+import { UserFeatureModule } from './features/user/user.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { AuthMiddleware } from './features/auth/infrastructure/service/middleware/auth.middleware';
+import { TransactionController } from './api/transaction/transaction.controller';
+import { TokenController } from './api/token/token.controller';
 
 @Module({
   imports: [
-    AuthModule,
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [configs],
@@ -19,8 +26,22 @@ import { TokenFeatureModule } from './features/token/token.module';
     }),
     TokenFeatureModule,
     DatabaseModule,
+    AuthFeatureModule,
+    TransactionFeatureModule,
+    UserFeatureModule
   ],
-  controllers: [AuthorizationController],
-  providers: [AuthorizationService],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'api/auth/register', method: RequestMethod.POST },
+        { path: 'api/auth/confirm', method: RequestMethod.POST },
+        { path: 'api/auth/login', method: RequestMethod.POST },
+      )
+      .forRoutes(TransactionController)
+  }
+}

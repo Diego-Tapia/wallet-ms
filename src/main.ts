@@ -1,12 +1,18 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-
+import * as helmet from 'helmet';
+import * as csurf from 'csurf';
+import * as compression from 'compression';
 import { AppModule } from './app.module';
 global['fetch'] = require('node-fetch');
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.use(helmet());
+  app.use(compression());
 
   const config = new DocumentBuilder()
     .setTitle('Interconomy wallet Microservice')
@@ -19,8 +25,9 @@ async function bootstrap() {
     customSiteTitle: 'Interconomy Wallet MS Docs',
   });
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
-
   await app.listen(3000);
+  
+ 
+  
 }
 bootstrap();
