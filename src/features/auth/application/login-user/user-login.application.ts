@@ -38,6 +38,7 @@ export class UserLoginApplication implements IUserAuthLoginApplication {
     await this.userAuthRepository.login(login);
     
     const payload: UserI = await this.userRepository.findOneUser(username);
-    return this.userAuthRepository.generateJwt(payload);
+    const token = this.userAuthRepository.generateJwt(payload);
+    return {token}
   }
 }
