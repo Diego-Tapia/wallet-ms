@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TransactionController } from 'src/api/transaction/transaction.controller';
 import { AuthFeatureModule } from '../auth/auth.module';
 import { UserAuthRepositoryProvider } from '../auth/infrastructure/repositories/auth-user-repository.provider';
-import { UserModel, UserSchema } from '../user/infrastructure/models/user.model';
+import { UserProfileModel, UserProfileSchema } from '../user/infrastructure/models/user-profile.model';
 import { UserRepositoryProvider } from '../user/infrastructure/repositories/user-repository.provider';
 import { CreateTransactionApplicationProvider } from './application/create-transaction/create-transaction.provider';
 import { GetAllTransactionsApplicationProvider } from './application/get-all-transaction/get-all-transactions.provider';
@@ -14,7 +14,7 @@ import { TransactionRepositoryProvider } from './infrastructure/repositories/tra
 @Module({
   controllers: [TransactionController],
   imports: [AuthFeatureModule,
-    MongooseModule.forFeature([{ name: TransactionModel.name, schema: TransactionSchema },{ name: UserModel.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: TransactionModel.name, schema: TransactionSchema },{ name: UserProfileModel.name, schema: UserProfileSchema }]),
   ],
   providers: [
     UserRepositoryProvider,

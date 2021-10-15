@@ -1,30 +1,33 @@
-export class User {
-  idWallet: string;
-  dni: number;
+export class UserProfile {
+  userId: string;
   shortName: string;
   lastName: string;
+  dni: number;
   cuil: number;
+  avatarUrl: string;
   email: string;
   phoneNumber: string;
-  username: string;
+
 
   constructor(
-    idWallet: string,
-    dni: number,
+    userId: string,
     shortName: string,
     lastName: string,
+    dni: number,
     cuil: number,
+    avatarUrl: string,
     email: string,
     phoneNumber: string,
-    username:string
+
   ) {
-    this.idWallet = idWallet;
-    this.dni = dni;
+    this.userId = userId;
     this.shortName = shortName;
     this.lastName = lastName;
+    this.dni = dni;
     this.cuil = cuil;
+    this.avatarUrl = avatarUrl;
     this.email = email;
     this.phoneNumber = phoneNumber;
-    this.username = username;
+
   }
 }
