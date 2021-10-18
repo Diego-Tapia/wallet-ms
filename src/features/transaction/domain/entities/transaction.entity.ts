@@ -1,30 +1,28 @@
 export class Transaction {
-  type: string;
   hash: string;
-  Token: string;
+  token: string;
   walletFrom: string;
   walletTo: string;
   amount: number;
-  status: string;
-  dniFrom: number;
+  usuarioId:string;
+  notes: string;
 
   constructor(
-    type: string,
     hash: string,
-    Token: string,
+    token: string,
     walletFrom: string,
     walletTo: string,
     amount: number,
-    status: string,
-    dniFrom: number,
+    usuarioId:string,
+    notes: string,
   ) {
-    this.type = type;
     this.hash = hash;
-    this.Token = Token;
+    this.token = token;
     this.walletFrom = walletFrom;
     this.walletTo = walletTo;
     this.amount = amount;
-    this.status = status;
-    this.dniFrom = dniFrom;
+    this.usuarioId= usuarioId;
+    this.notes = notes;
+
   }
 }

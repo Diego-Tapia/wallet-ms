@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { User } from '../../domain/entities/user.entity';
+import { UserProfile } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../infrastructure/repositories/user-repository.interface';
 import { UserTypes } from '../../user.types';
 import { IGetUserpplication } from './get-user-app.interface';
@@ -11,7 +11,7 @@ export class GetUserApplication implements IGetUserpplication {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  public execute(dni: number): Promise<User> {
+  public execute(dni: number): Promise<UserProfile> {
     return this.userRepository.findOne(dni);
   }
 }

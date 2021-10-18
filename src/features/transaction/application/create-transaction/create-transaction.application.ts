@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Error } from 'mongoose';
 import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
-import { IUserRepository } from 'src/features/user/infrastructure/repositories/user-repository.interface';
-import { UserTypes } from 'src/features/user/user.types';
+import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserTypes } from 'src/features/user_profile/user.types';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { CreateTransactionDto } from '../../infrastructure/dtos/create-transaction.dto';
 import { ITransactionRepository } from '../../infrastructure/repositories/transaction-repository.interface';

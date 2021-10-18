@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { UserAuthTypes } from 'src/features/auth/auth.types';
-import { IUserRepository } from 'src/features/user/infrastructure/repositories/user-repository.interface';
-import { UserTypes } from 'src/features/user/user.types';
+import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserTypes } from 'src/features/user_profile/user.types';
 import { UserI } from '../../interfaces/user.interface';
 import { IUserAuthRepository } from '../../repositories/auth-user-repository.interface';
 

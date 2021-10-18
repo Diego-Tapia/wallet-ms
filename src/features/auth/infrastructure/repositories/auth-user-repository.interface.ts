@@ -1,3 +1,4 @@
+import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
 import { Confirm } from '../../domain/entities/authConfirmUser.entity';
 import { Login } from '../../domain/entities/authLoginUser.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
@@ -9,4 +10,5 @@ export interface IUserAuthRepository {
   login(userLogin: Login): any;
   verifyJwt(jwt: string):Promise<any>;
   generateJwt(user: UserI): Promise<any>;
+  saveUserProfile(user:UserProfile):Promise<any>;
 }

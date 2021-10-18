@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 import { ApplicabilityModel } from 'src/features/appicability/infrastructure/models/applicability.model';
 import { TransactionTypeModel } from 'src/features/transaction_type/infrastructure/models/token-type.model';
 
+
 @Schema({
   timestamps: true,
 })
@@ -36,7 +37,7 @@ export class TokenModel extends Document {
   validTo?: Date;
 
   @Prop()
-  bc_item_id: string;
+  bc_item_id?: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: TransactionTypeModel.name }] })
   operations: TransactionTypeModel[];

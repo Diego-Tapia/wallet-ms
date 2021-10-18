@@ -9,6 +9,7 @@ import {
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
 import configs from 'src/configs/environments/configs';
+import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
 import { Confirm } from '../../domain/entities/authConfirmUser.entity';
 import { Login } from '../../domain/entities/authLoginUser.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
@@ -27,6 +28,9 @@ export class UserAuthRepository implements IUserAuthRepository {
       UserPoolId: this.config.cognito.user_pool,
       ClientId: this.config.cognito.client_id,
     });
+  }
+  saveUserProfile(user: UserProfile): Promise<any> {
+    throw new Error('Method not implemented.');
   }
 
 

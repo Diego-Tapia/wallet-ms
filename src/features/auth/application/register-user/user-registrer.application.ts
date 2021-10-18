@@ -3,12 +3,12 @@ import { UserAuthTypes } from '../../auth.types';
 import { IUserAuthRegisterApplication } from './user-registrer.app.interface';
 import { IUserAuthRepository } from '../../infrastructure/repositories/auth-user-repository.interface';
 import { UserRegisterDTO } from '../../infrastructure/dto/user-register.dto';
-import { IUserRepository } from 'src/features/user/infrastructure/repositories/user-repository.interface';
-import { UserTypes } from 'src/features/user/user.types';
 import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
 import { Wallet } from 'src/features/wallet/domain/entities/wallet.entity';
-import { User } from 'src/features/user/domain/entities/user.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
+import { UserTypes } from 'src/features/user_profile/user.types';
+import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
 let mongoose = require('mongoose');
 
 
@@ -24,7 +24,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
   ) {}
 
   public async execute(userRegisterDto: UserRegisterDTO): Promise<any> {
-    const { username, email, password, dni, shortName, lastName, cuil, phoneNumber } =
+    const { email, password, dni, shortName, lastName, cuil, phoneNumber,avatarUrl,username } =
       userRegisterDto;
 
     const userRegister = new Register(username, email, password);
@@ -41,17 +41,19 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
       //falta el llamado a la api de Blockchain para crear una wallet, asi que genero id de mongo randoms para las wallets
       let id = new mongoose.Types.ObjectId();
       
-      const user = new User(
+      const userProfile = new UserProfile(
         id.toString(),
-        dni,
         shortName,
         lastName,
+        dni,
         cuil,
         email,
+        avatarUrl,
         phoneNumber,
-        username
       );
-      await this.userRepository.create(user);
+      await this.userRepository.create(userProfile);
+
+
     }
   }
 }

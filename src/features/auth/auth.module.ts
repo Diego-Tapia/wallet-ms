@@ -9,9 +9,9 @@ import { UserAuthRepositoryProvider } from './infrastructure/repositories/auth-u
 import { UserLoginProvider } from './application/login-user/user-login.provider';
 import { UserRegistrerProvider } from './application/register-user/user-registrer.provider';
 import { UserConfirmProvider } from './application/user-confirm/user-confirm.provider';
-import { UserRepositoryProvider } from '../user/infrastructure/repositories/user-repository.provider';
 import { JwtModule } from '@nestjs/jwt';
-import { UserProfileModel, UserProfileSchema } from '../user/infrastructure/models/user-profile.model';
+import { UserRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
+import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
 
 
 @Module({

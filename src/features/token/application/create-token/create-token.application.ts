@@ -10,19 +10,21 @@ export class CreateTokenApplication implements ICreateTokenApplication {
   constructor(
     @Inject(TokenTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly tokenRepository: ITokenRepository,
-  ) {}
+  ) { }
 
   public execute(createTokenDto: CreateTokenDto): Promise<Token> {
-    const { symbol, shortName, description, validFrom, validTo, initialAmount } = createTokenDto;
+    const { shortName, symbol, price, money, bcItemId, operations, applicabilities, description, validFrom, validTo } = createTokenDto;
 
     const token = new Token(
-      symbol,
       shortName,
-      1,
-      initialAmount,
-      'PENDING_APPROVE',
+      symbol,
+      price,
+      money,
+      bcItemId,
+      operations.toString(),
+      applicabilities.toString(),
       description,
-      validFrom,
+      validFrom.toString(),
       validTo,
     );
 

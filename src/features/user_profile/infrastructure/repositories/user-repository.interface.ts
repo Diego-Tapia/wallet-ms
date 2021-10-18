@@ -1,9 +1,10 @@
-import { User } from '../../domain/entities/user.entity';
+import { UserProfile } from "../../domain/entities/user.entity";
+
 
 export interface IUserRepository {
-  create(user: User): Promise<User>;
-  findAll(): Promise<User[]>;
-  findById(id: string): Promise<User>;
-  findOne(dni: any): Promise<User>;
-  findOneUser(user: string): Promise<User>;
+  create(user: UserProfile): Promise<UserProfile>;
+  findAll(): Promise<UserProfile[]>;
+  findById(id: string): Promise<UserProfile>;
+  findOne(dni: any): Promise<UserProfile>;
+  findOneUser(user: string): Promise<UserProfile>;
 }

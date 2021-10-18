@@ -6,11 +6,10 @@ import configs from './configs/environments/configs';
 import envValidations from './configs/environments/env.validations';
 import { TokenFeatureModule } from './features/token/token.module';
 import { TransactionFeatureModule } from './features/transaction/transaction.module';
-import { UserFeatureModule } from './features/user/user.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthMiddleware } from './features/auth/infrastructure/service/middleware/auth.middleware';
 import { TransactionController } from './api/transaction/transaction.controller';
-import { TokenController } from './api/token/token.controller';
+import { UserFeatureModule } from './features/user_profile/user.module';
 
 @Module({
   imports: [
