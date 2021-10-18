@@ -24,9 +24,6 @@ export class ClientConfigModel extends Document {
 
   @Prop({ required: true })
   domain: number;
-  
-  @Prop({ required: true })
-  email: string;
 
   @Prop({ required: true })
   verify_user: string;

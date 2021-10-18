@@ -27,16 +27,15 @@ export class TransactionRepository implements ITransactionRepository {
   }
 
   private toDomainEntity(model: TransactionModel): Transaction {
-    const { type, hash, Token, walletFrom, walletTo, amount, status,dniFrom } = model;
+    const { hash, token_id,walletFrom_id,walletTo_id,amount,user_id,notes } = model;
     const transactionEntity = new Transaction(
-      type,
       hash,
-      Token.toString(),
-      walletFrom.toString(),
-      walletTo.toString(),
+      token_id.toString(),
+      walletFrom_id.toString(),
+      walletTo_id.toString(),
       amount,
-      status,
-      dniFrom
+      user_id.toString(),
+      notes,
     );
     return transactionEntity;
   }

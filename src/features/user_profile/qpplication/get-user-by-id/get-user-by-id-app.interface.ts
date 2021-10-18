@@ -1,5 +1,5 @@
-import { User } from '../../domain/entities/user.entity';
+import { UserProfile } from '../../domain/entities/user.entity';
 
 export interface IGetUserByIdApplication {
-  execute(id: string): Promise<User>;
+  execute(id: string): Promise<UserProfile>;
 }

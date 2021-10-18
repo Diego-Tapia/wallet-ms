@@ -4,32 +4,30 @@ import {
   IsNotEmpty,
   IsNumber,
   IsEmail,
-  IsMongoId,
 } from 'class-validator';
 
-export class CreateUserProfileDto {
-
-  @IsMongoId()
-  @IsNotEmpty()
-  userId: string;
-  
+export class ClientDto {
   @IsString()
   @IsNotEmpty()
-  shortName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
-  
-  @IsNumber()
-  @Type(() => Number)
-  @IsNotEmpty()
-  dni: number;
+  name: string;
 
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
-  cuil: number;
+  cuit: number;
+
+  @IsString()
+  @IsNotEmpty()
+  business_name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  responsible: string;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  phoneNumber: number;
 
   @IsEmail()
   @IsNotEmpty()
@@ -37,14 +35,14 @@ export class CreateUserProfileDto {
 
   @IsString()
   @IsNotEmpty()
-  phoneNumber: string;
-
-  @IsString()
-  @IsNotEmpty()
-  avatarUrl: string;
-
-  @IsString()
-  @IsNotEmpty()
   username: string;
+  
+  @IsString()
+  @IsNotEmpty()
+  status: string
+
+  @IsString()
+  @IsNotEmpty()
+  industry: string
 
 }

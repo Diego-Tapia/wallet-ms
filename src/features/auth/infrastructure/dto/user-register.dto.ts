@@ -5,9 +5,6 @@ import {
   MinLength,
   IsEmail,
   IsNumber,
-  IsPhoneNumber,
-  IsMongoId,
-  IsInt,
 } from 'class-validator';
 export class UserRegisterDTO {
   @IsEmail()
@@ -41,6 +38,13 @@ export class UserRegisterDTO {
   @IsNotEmpty()
   cuil: number;
 
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   phoneNumber: string;
+
+  @IsString()
+  @IsNotEmpty()
+  avatarUrl: string;
+
 }

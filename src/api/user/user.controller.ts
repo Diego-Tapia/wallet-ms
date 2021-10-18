@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from 'src/features/user/infrastructure/dtos/create-user.dto';
-import { ICreateUserApplication } from 'src/features/user/qpplication/create-user/create-user.app.interface';
-import { IGetAllUsersApplication } from 'src/features/user/qpplication/get-all-user/get-all-users.app.interface';
-import { IGetUserByIdApplication } from 'src/features/user/qpplication/get-user-by-id/get-user-by-id-app.interface';
-import { UserTypes } from 'src/features/user/user.types';
+
+import { CreateUserProfileDto } from 'src/features/user_profile/infrastructure/dtos/create-user.dto';
+import { ICreateUserApplication } from 'src/features/user_profile/qpplication/create-user/create-user.app.interface';
+import { IGetAllUsersApplication } from 'src/features/user_profile/qpplication/get-all-user/get-all-users.app.interface';
+import { IGetUserByIdApplication } from 'src/features/user_profile/qpplication/get-user-by-id/get-user-by-id-app.interface';
+import { UserTypes } from 'src/features/user_profile/user.types';
 
 @ApiTags('user')
 @Controller('user')
@@ -19,7 +20,7 @@ export class UserController {
   ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserProfileDto) {
     return this.createUserApplication.execute(createUserDto);
   }
 

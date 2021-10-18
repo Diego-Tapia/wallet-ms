@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { User } from '../../domain/entities/user.entity';
-import { CreateUserDto } from '../../infrastructure/dtos/create-user.dto';
+import { UserProfile } from '../../domain/entities/user.entity';
+import { CreateUserProfileDto } from '../../infrastructure/dtos/create-user.dto';
 import { IUserRepository } from '../../infrastructure/repositories/user-repository.interface';
 import { UserTypes } from '../../user.types';
 import { ICreateUserApplication } from './create-user.app.interface';
@@ -12,10 +12,10 @@ export class CreateUserApplication implements ICreateUserApplication {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  public execute(createUserDto: CreateUserDto): Promise<User> {
-    const { idWallet, dni, shortName, lastName, cuil, email, phoneNumber,username } = createUserDto;
+  public execute(createUserDto: CreateUserProfileDto): Promise<UserProfile> {
+    const {userId,dni, shortName, lastName, cuil, avatarUrl,email, phoneNumber } = createUserDto;
 
-    const user = new User(idWallet, dni, shortName, lastName, cuil, email, phoneNumber,username);
+    const user = new UserProfile(userId,shortName, lastName,dni, cuil,avatarUrl, email, phoneNumber);
 
     return this.userRepository.create(user);
   }

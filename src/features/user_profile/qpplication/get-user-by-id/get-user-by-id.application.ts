@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { User } from '../../domain/entities/user.entity';
+import { UserProfile } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../infrastructure/repositories/user-repository.interface';
 import { UserTypes } from '../../user.types';
 import { IGetUserByIdApplication } from './get-user-by-id-app.interface';
@@ -11,7 +11,7 @@ export class GetUserByIdApplication implements IGetUserByIdApplication {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  public execute(id: string): Promise<User> {
+  public execute(id: string): Promise<UserProfile> {
     return this.userRepository.findById(id);
   }
 }

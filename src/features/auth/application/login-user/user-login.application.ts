@@ -9,8 +9,8 @@ import { IUserAuthLoginApplication } from './user-login-app.interface';
 import { Login } from '../../domain/entities/authLoginUser.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserI } from '../../infrastructure/interfaces/user.interface';
-import { UserTypes } from 'src/features/user/user.types';
-import { IUserRepository } from 'src/features/user/infrastructure/repositories/user-repository.interface';
+import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserTypes } from 'src/features/user_profile/user.types';
 @Injectable()
 export class UserLoginApplication implements IUserAuthLoginApplication {
   private userPool: CognitoUserPool;
@@ -22,7 +22,6 @@ export class UserLoginApplication implements IUserAuthLoginApplication {
     private readonly userAuthRepository: IUserAuthRepository,
     @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userRepository: IUserRepository,
-    private readonly _jwtService: JwtService,
     
   ) {
     this.userPool = new CognitoUserPool({

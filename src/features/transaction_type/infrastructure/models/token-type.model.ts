@@ -4,7 +4,7 @@ import { Document} from 'mongoose';
 @Schema({
   timestamps: true,
 })
-export class TokenTypeModel extends Document {
+export class TransactionTypeModel extends Document {
 
   @Prop({ required: true })
   name: string;
@@ -14,4 +14,4 @@ export class TokenTypeModel extends Document {
 
 }
 
-export const TokenTypeSchema = SchemaFactory.createForClass(TokenTypeModel);
+export const TransactionTypeSchema = SchemaFactory.createForClass(TransactionTypeModel);
