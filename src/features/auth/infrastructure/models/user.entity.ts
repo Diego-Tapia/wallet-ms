@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document,  Schema as MongooseSchema , ObjectId, Types } from 'mongoose';
 import { ClientModel } from 'src/features/client/infrastructure/models/client.model';
 import { WalletModel } from 'src/features/wallet/infrastructure/models/wallet.model';
 
@@ -18,10 +18,10 @@ export class UserModel extends Document {
   status: string;
 
   @Prop({ type: Types.ObjectId, ref: ClientModel.name })
-  client_id: ClientModel | Types.ObjectId;
+  client_id: ClientModel | Types.ObjectId; 
 
-  @Prop({ type: Types.ObjectId, ref: WalletModel.name })
-  wallet_id: WalletModel | Types.ObjectId;
+/*   @Prop({ type: Types.ObjectId, ref: WalletModel.name })
+  wallet_id: WalletModel | Types.ObjectId; */
 
 
 }

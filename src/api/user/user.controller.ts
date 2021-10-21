@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Request } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
 
 import { CreateUserProfileDto } from 'src/features/user_profile/infrastructure/dtos/create-user.dto';
 import { ICreateUserApplication } from 'src/features/user_profile/qpplication/create-user/create-user.app.interface';
@@ -20,8 +21,8 @@ export class UserController {
   ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserProfileDto) {
-    return this.createUserApplication.execute(createUserDto);
+  create(@Body() createUserDto: CreateUserProfileDto,@Request() req) {
+    return this.createUserApplication.execute(createUserDto,req);
   }
 
   @Get()

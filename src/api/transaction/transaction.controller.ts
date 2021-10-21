@@ -21,7 +21,6 @@ export class TransactionController {
   ) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   create(@Body() createTransactionDto: CreateTransactionDto,@Request() req) {
     return this.createTransactionApplication.execute(createTransactionDto,req);
   }

@@ -1,21 +1,28 @@
 import { Type } from 'class-transformer';
-import { IsString, IsNotEmpty, IsMongoId, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsMongoId, IsNumber, IsString } from 'class-validator';
 
 export class CreateTransactionDto {
 
-  @IsNumber()
-  @Type(() => Number)
+  @IsString()
   @IsNotEmpty()
-  public readonly dniFrom: number;
+  public readonly hash: string;
 
   @IsMongoId()
   @IsNotEmpty()
-  public readonly Token: string;
-
+  public readonly token: string;
 
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
   public readonly amount: number;
+
+  @IsString()
+  @IsNotEmpty()
+  public readonly notes: string;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  public readonly dni: number;
 
 }

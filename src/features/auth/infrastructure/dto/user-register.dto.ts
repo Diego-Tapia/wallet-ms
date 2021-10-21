@@ -5,20 +5,22 @@ import {
   MinLength,
   IsEmail,
   IsNumber,
+  IsMongoId,
 } from 'class-validator';
 export class UserRegisterDTO {
+  
   @IsEmail()
   @IsNotEmpty()
-  public readonly email: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()
-  public readonly username: string;
+  username: string;
 
   @IsString()
   @MinLength(8)
   @IsNotEmpty()
-  public readonly password: string;
+  password: string;
 
   @IsNumber()
   @Type(() => Number)
@@ -41,10 +43,18 @@ export class UserRegisterDTO {
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
-  phoneNumber: string;
+  phoneNumber: number;
 
   @IsString()
   @IsNotEmpty()
-  avatarUrl: string;
+  avatar_url: string;
+
+  @IsString()
+  @IsNotEmpty()
+  custom_id: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  client_id: string;
 
 }

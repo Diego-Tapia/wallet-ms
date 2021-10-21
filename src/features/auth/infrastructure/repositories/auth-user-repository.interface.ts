@@ -2,6 +2,7 @@ import { UserProfile } from 'src/features/user_profile/domain/entities/user.enti
 import { Confirm } from '../../domain/entities/authConfirmUser.entity';
 import { Login } from '../../domain/entities/authLoginUser.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
+import { User } from '../../domain/entities/user.entity';
 import { UserI } from '../interfaces/user.interface';
 
 export interface IUserAuthRepository {
@@ -10,5 +11,6 @@ export interface IUserAuthRepository {
   login(userLogin: Login): any;
   verifyJwt(jwt: string):Promise<any>;
   generateJwt(user: UserI): Promise<any>;
-  saveUserProfile(user:UserProfile):Promise<any>;
+  create(user:User):Promise<any>;
+  findOne(user:any)
 }
