@@ -45,10 +45,6 @@ export class CreateUserProfileDto {
 
   @IsString()
   @IsNotEmpty()
-  avatarUrl: string;
-
-  @IsString()
-  @IsNotEmpty()
   username: string;
 
 }
