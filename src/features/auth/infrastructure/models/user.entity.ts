@@ -14,7 +14,7 @@ export class UserModel extends Document {
   @Prop({ required: true })
   username: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, enum: ['ACTIVE', 'BLOCKED', 'PENDING_APPROVE', 'INACTIVE'] })
   status: string;
 
   @Prop({ type: Types.ObjectId, ref: ClientModel.name })

@@ -25,7 +25,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
   ) { }
 
   public async execute(userRegisterDto: UserRegisterDTO): Promise<any> {
-    const { email, password, dni, shortName, lastName, cuil, phoneNumber, avatar_url, username, custom_id } =
+    const { client_id,email, password, dni, shortName, lastName, cuil, phoneNumber, avatar_url, username, custom_id } =
       userRegisterDto;
 
     const userExists = await this.userRepository.findOne(dni);
@@ -37,23 +37,11 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
     if (userExists === null) {
       const userRegister = new Register(username, email, password);
       await this.userAuthRepository.register(userRegister);
-
-   const newWallet = {
-        "address": "address",
-        "privateKey": "key"
-      }
-      
-      /* const wallet_id = await this.walletRepository.create(newWallet)  */
-      const client_id = new mongoose.Types.ObjectId();
-      const wallet_id = new mongoose.Types.ObjectId(); 
-      const user_id = new mongoose.Types.ObjectId();
- 
-      
-      
+     
       const user = new User(
         custom_id,
         username,
-        "PENDING",
+        "PENDING_APPROVE",
         client_id
 
       )
