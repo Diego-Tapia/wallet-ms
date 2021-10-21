@@ -39,7 +39,6 @@ export class UserAuthRepository implements IUserAuthRepository {
     throw new Error('Method not implemented.');
   }
 
-
   public register(register: Register): Promise<any> {
     const username = register.username;
     const email = register.email;
