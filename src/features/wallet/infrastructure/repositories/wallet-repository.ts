@@ -11,12 +11,12 @@ export class WalletRepository implements IWalletRepository {
 
   public async create(wallet: Wallet): Promise<Wallet> {
     const savedWallet = await new this.walletModel(wallet).save();
-    return this.toDomainEntity(savedWallet);
+    return this.toDomainEntity(savedWallet)
   }
 
   private toDomainEntity(model: WalletModel): Wallet {
-    const { id, address, privateKey } = model;
-    const walletEntity = new Wallet(id, address, privateKey);
+    const { address, privateKey } = model;
+    const walletEntity = new Wallet(address, privateKey);
     return walletEntity;
   }
 }

@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 import { TokenModel } from 'src/features/token/infrastructure/models/token.model';
 
 @Schema({
-  timestamps: true,
+  _id:true, timestamps: true,
 })
 export class WalletModel extends Document {
   @Prop({ required: true })

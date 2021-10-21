@@ -12,6 +12,7 @@ import { UserConfirmProvider } from './application/user-confirm/user-confirm.pro
 import { JwtModule } from '@nestjs/jwt';
 import { UserRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
 import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
+import { UserModel, UserSchema } from './infrastructure/models/user.entity';
 
 
 @Module({
@@ -20,7 +21,7 @@ import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastruct
       load: [configs],
       isGlobal: true,
     }),
-    MongooseModule.forFeature([{ name: UserProfileModel.name, schema: UserProfileSchema }]),
+    MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema },{ name: UserProfileModel.name, schema: UserProfileSchema }]),
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],

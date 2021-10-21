@@ -1,33 +1,34 @@
 export class UserProfile {
-  userId: string;
   shortName: string;
   lastName: string;
   dni: number;
   cuil: number;
-  avatarUrl: string;
+  avatar_url: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber: number;
+  user_id?: string;
 
 
   constructor(
-    userId: string,
     shortName: string,
     lastName: string,
     dni: number,
     cuil: number,
-    avatarUrl: string,
+    avatar_url: string,
     email: string,
-    phoneNumber: string,
+    phoneNumber: number,
+    user_id?: string,
 
   ) {
-    this.userId = userId;
+    
     this.shortName = shortName;
     this.lastName = lastName;
     this.dni = dni;
     this.cuil = cuil;
-    this.avatarUrl = avatarUrl;
+    this.avatar_url = avatar_url;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    this.user_id = user_id;
 
   }
 }

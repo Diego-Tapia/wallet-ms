@@ -8,10 +8,9 @@ import {
 } from 'class-validator';
 
 export class CreateUserProfileDto {
-
   @IsMongoId()
   @IsNotEmpty()
-  userId: string;
+  user_id: string;
   
   @IsString()
   @IsNotEmpty()
@@ -35,9 +34,14 @@ export class CreateUserProfileDto {
   @IsNotEmpty()
   email: string;
 
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  phoneNumber: number;
+
   @IsString()
   @IsNotEmpty()
-  phoneNumber: string;
+  avatarUrl: string;
 
   @IsString()
   @IsNotEmpty()

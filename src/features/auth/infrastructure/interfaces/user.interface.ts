@@ -1,8 +1,7 @@
 export interface UserI {
-    dni: any;
-    shortName: string;
-    lastName: string;
-    cuil: any;
-    email: string;
-    phoneNumber: string;
+    username:string;
+    idWallet:string;
+    idClient:string;
+    status:string;
+    customId:string;
   }

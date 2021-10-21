@@ -30,12 +30,9 @@ export class TransactionRepository implements ITransactionRepository {
     const { hash, token_id,walletFrom_id,walletTo_id,amount,user_id,notes } = model;
     const transactionEntity = new Transaction(
       hash,
-      token_id.toString(),
-      walletFrom_id.toString(),
-      walletTo_id.toString(),
       amount,
-      user_id.toString(),
       notes,
+
     );
     return transactionEntity;
   }

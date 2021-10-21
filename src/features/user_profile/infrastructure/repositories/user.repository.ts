@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { UserProfile } from '../../domain/entities/user.entity';
 import { IUserRepository } from './user-repository.interface';
 import { UserProfileModel } from '../models/user-profile.model';
+import { User } from 'src/features/auth/domain/entities/user.entity';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -34,18 +35,17 @@ export class UserRepository implements IUserRepository {
     return userModel ? this.toDomainEntity(userModel) : null;
   }
 
-
-  private toDomainEntity(model: UserProfileModel): UserProfile {
+  private toDomainEntity(model: UserProfileModel):UserProfile{
     const { user_id,shortName, lastName, dni, cuil, avatar_url, email, phoneNumber } = model;
     const userEntity = new UserProfile(
-      user_id.toString(),
       shortName,
       lastName,
       dni,
       cuil,
       avatar_url,
       email,
-      phoneNumber.toString(),
+      phoneNumber,
+      user_id.toString()
     );
     return userEntity;
   }

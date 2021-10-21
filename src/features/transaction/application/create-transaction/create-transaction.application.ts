@@ -22,26 +22,22 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
   public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Promise<Transaction> {
 
     try {
-      const { dniFrom, Token, amount } = createTransactionDto;
-      const walletTo = await this.userRepository.findOne(dniFrom);
+      const {hash,amount,notes,dni } = createTransactionDto;
+      const walletTo = await this.userRepository.findOne(dni);
       if (walletTo === null) {
-        throw new Error('wallet was not found')
+        throw new Error('user was not found')
       }
 
       const transaction = new Transaction(
-        'TRANSFER',
-        'HASH',
-        Token,
-        req.user.idWallet,
-        walletTo.idWallet,
+        hash,
         amount,
-        'IN_PROGRESS',
-        dniFrom,
+        notes
       );
 
       return this.transactionRepository.create(transaction);
 
     } catch (error) {
+      console.log(error)
       throw new Error('Error in transaction application:')
     }
 

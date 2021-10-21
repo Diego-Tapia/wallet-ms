@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/mongoose';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -8,12 +9,16 @@ import {
   CognitoUserPool,
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
+import { Model } from 'mongoose';
 import configs from 'src/configs/environments/configs';
 import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
+import { UserProfileModel } from 'src/features/user_profile/infrastructure/models/user-profile.model';
 import { Confirm } from '../../domain/entities/authConfirmUser.entity';
 import { Login } from '../../domain/entities/authLoginUser.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
+import { User } from '../../domain/entities/user.entity';
 import { UserI } from '../interfaces/user.interface';
+import { UserModel } from '../models/user.entity';
 import { IUserAuthRepository } from './auth-user-repository.interface';
 
 @Injectable()
@@ -22,7 +27,8 @@ export class UserAuthRepository implements IUserAuthRepository {
   constructor(
     @Inject(configs.KEY)
     private config: ConfigType<typeof configs>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    @InjectModel(UserModel.name) private readonly userModel: Model<UserModel>
   ) {
     this.userPool = new CognitoUserPool({
       UserPoolId: this.config.cognito.user_pool,
@@ -32,7 +38,6 @@ export class UserAuthRepository implements IUserAuthRepository {
   saveUserProfile(user: UserProfile): Promise<any> {
     throw new Error('Method not implemented.');
   }
-
 
 
   public register(register: Register): Promise<any> {
@@ -106,6 +111,31 @@ export class UserAuthRepository implements IUserAuthRepository {
       });
     });
   }
+
+  public async findOne(username: string): Promise<User> {
+    const userModel = await this.userModel.findOne({ username: username }).exec();
+    return userModel ? this.toDomainEntity(userModel) : null;
+  }
+
+  public async create(user: User): Promise<User> {
+    const savedUser = await new this.userModel(user).save();
+    return this.toDomainEntity(savedUser);
+  }
+
+
+  private toDomainEntity(model: UserModel): User {
+    const { custom_id, username, status,client_id,_id } = model;
+    const userEntity = new User(
+      custom_id,
+      username,
+      status,
+      client_id.toString(),
+      _id.toString(),
+    );
+    return userEntity;
+  }
+
+
 
   async generateJwt(user: UserI): Promise<string> {
     return this.jwtService.signAsync({ user });

@@ -41,6 +41,6 @@ export class AppModule implements NestModule {
         { path: 'api/auth/confirm', method: RequestMethod.POST },
         { path: 'api/auth/login', method: RequestMethod.POST },
       )
-      .forRoutes(TransactionController)
+      .forRoutes(/* TransactionController */)
   }
 }
