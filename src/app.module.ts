@@ -9,6 +9,8 @@ import { TransactionFeatureModule } from './features/transaction/transaction.mod
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthMiddleware } from './features/auth/infrastructure/service/middleware/auth.middleware';
 import { UserFeatureModule } from './features/user_profile/user.module';
+import { WalletFeatureModule } from './features/wallet/wallet.module';
+
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { UserFeatureModule } from './features/user_profile/user.module';
     AuthFeatureModule,
     TransactionFeatureModule,
     UserFeatureModule,
+    WalletFeatureModule,
   ],
   controllers: [],
   providers: [],

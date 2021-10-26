@@ -1,7 +1,7 @@
 import { WalletTypes } from '../../wallet.type';
 import { CreateWalletApplication } from './create-wallet.application';
 
-export const CreateTransactionApplicationProvider = {
+export const CreateWalletApplicationProvider = {
   provide: WalletTypes.APPLICATION.CREATE_WALLET,
   useClass: CreateWalletApplication,
 };
