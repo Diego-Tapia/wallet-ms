@@ -16,4 +16,5 @@ export default Joi.object({
   COGNITO_REGION: Joi.string().required(),
   AUTHORITY: Joi.string().required(),
   SECRET: Joi.string().required(),
+  URL_BLOCKCHAIN: Joi.string().required()
 });

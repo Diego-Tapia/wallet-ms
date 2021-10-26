@@ -8,10 +8,10 @@ import { IGetTransactionByIdApplication } from './get-transaction-by-id-app.inte
 export class GetTransactionByIdApplication implements IGetTransactionByIdApplication {
   constructor(
     @Inject(TransactionTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly transactionRepository: ITransactionRepository,
+    private readonly transactionRepository: ITransactionRepository
   ) {}
 
   public execute(id: string): Promise<Transaction> {
-    return this.transactionRepository.findById(id);
+    return this.transactionRepository.findById(id)
   }
 }
