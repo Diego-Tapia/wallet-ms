@@ -16,7 +16,7 @@ export class WalletModel extends Document {
     token_id: { type: Types.ObjectId, ref: TokenModel.name },
     amount: { type: Number }
   }))
-  balance: Record<string, any>[];
+  balances: Record<string, any>[];
 
 }
 

@@ -26,7 +26,7 @@ export default registerAs('configs', () => ({
   secret:{
     secret: process.env.SECRET,
   },
-  blockchain_ms: {
-    url: process.env.URL_BLOCKCHAIN,
+  blockchain_ms:{
+    url: process.env.BLOCKCHAIN_URL,
   }
 }));

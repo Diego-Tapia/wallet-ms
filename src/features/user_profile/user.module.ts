@@ -3,9 +3,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserProfileModel, UserProfileSchema } from './infrastructure/models/user-profile.model';
 
 import { UserRepositoryProvider } from './infrastructure/repositories/user-repository.provider';
-import { CreateUserApplicationProvider } from './qpplication/create-user/create-user.provider';
-import { GetAllUsersApplicationProvider } from './qpplication/get-all-user/get-all-users.provider';
-import { GetUserByIdApplicationProvider } from './qpplication/get-user-by-id/get-user-by-id.provider';
+import { CreateUserApplicationProvider } from './application/create-user/create-user.provider';
+import { GetAllUsersApplicationProvider } from './application/get-all-user/get-all-users.provider';
+import { GetUserByIdApplicationProvider } from './application/get-user-by-id/get-user-by-id.provider';
 
 @Module({
   controllers: [],
