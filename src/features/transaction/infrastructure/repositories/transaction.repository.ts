@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { TransactionModel } from '../models/transaction.model';
-import { ITransactionRepository } from './transaction-repository.interface';
+import { IIdWalletFilter, ITransactionRepository } from './transaction-repository.interface';
 
 @Injectable()
 export class TransactionRepository implements ITransactionRepository {
@@ -15,9 +15,10 @@ export class TransactionRepository implements ITransactionRepository {
     const savedTransaction = await new this.transactionModel(transaction).save();
     return this.toDomainEntity(savedTransaction);
   }
-
-  public async findAll(): Promise<Transaction[]> {
-    const transactionModels = await this.transactionModel.find().exec();
+  public async findAll(filter: IIdWalletFilter): Promise<Transaction[]> {
+    const transactionModels = await this.transactionModel.find((filter))
+      .sort({ createdAt: -1 })
+      .exec();
     return transactionModels.map((transaction) => this.toDomainEntity(transaction));
   }
 

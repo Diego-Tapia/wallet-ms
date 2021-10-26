@@ -8,7 +8,6 @@ import { TokenFeatureModule } from './features/token/token.module';
 import { TransactionFeatureModule } from './features/transaction/transaction.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthMiddleware } from './features/auth/infrastructure/service/middleware/auth.middleware';
-import { TransactionController } from './api/transaction/transaction.controller';
 import { UserFeatureModule } from './features/user_profile/user.module';
 
 @Module({
@@ -27,7 +26,7 @@ import { UserFeatureModule } from './features/user_profile/user.module';
     DatabaseModule,
     AuthFeatureModule,
     TransactionFeatureModule,
-    UserFeatureModule
+    UserFeatureModule,
   ],
   controllers: [],
   providers: [],
