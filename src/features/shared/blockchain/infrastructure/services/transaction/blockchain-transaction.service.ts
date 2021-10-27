@@ -6,10 +6,10 @@ import { lastValueFrom, Observable } from "rxjs";
 import configs from "src/configs/environments/configs";
 import { Transaction } from "src/features/transaction/domain/entities/transaction.entity";
 import { AxiosException } from "../errors/axios.exception";
-import { ITransactionBlockchainService } from "./transaction-blockchain-service.interface";
+import { IBlockchainTransactionService } from "./blockchain-transaction-service.interface";
 
 @Injectable()
-export class TransactionBlockchainService implements ITransactionBlockchainService {
+export class BlockchainTransactionService implements IBlockchainTransactionService {
 
     private BLOCKCHAIN_URL;
 

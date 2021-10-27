@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Error } from 'mongoose';
 import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
 import { BlockchainTypes } from 'src/features/shared/blockchain/blockchain.types';
-import { ITransactionBlockchainService } from 'src/features/shared/blockchain/infrastructure/services/transaction/transaction-blockchain-service.interface';
+import { IBlockchainTransactionService } from 'src/features/shared/blockchain/infrastructure/services/transaction/blockchain-transaction-service.interface';
 import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
 import { UserTypes } from 'src/features/user_profile/user.types';
 import { Transaction } from '../../domain/entities/transaction.entity';
@@ -19,7 +19,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
     @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userRepository: IUserRepository,
     @Inject(BlockchainTypes.INFRASTRUCTURE.TRANSACTION)
-    private readonly transactionBlockchainService: ITransactionBlockchainService
+    private readonly blockchainTransactionService: IBlockchainTransactionService
   ) { }
 
   public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Promise<Transaction> {
@@ -37,7 +37,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
         notes
       );
 
-      return this.transactionBlockchainService.create(transaction);
+      return this.blockchainTransactionService.create(transaction);
       // return this.transactionRepository.create(transaction);
 
     } catch (error) {

@@ -1,6 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { TransactionBlockchainServiceProvider } from './infrastructure/services/transaction/transaction-blockchain-service.provider';
+import { BlockchainTransactionServiceProvider } from './infrastructure/services/transaction/blockchain-transaction-service.provider';
 import { BlockchainWalletServiceProvider } from './infrastructure/services/wallet/blockchain-wallet.provider';
 
 @Module({
@@ -9,11 +9,11 @@ import { BlockchainWalletServiceProvider } from './infrastructure/services/walle
     ],
     providers: [
         BlockchainWalletServiceProvider,
-        TransactionBlockchainServiceProvider
+        BlockchainTransactionServiceProvider
     ],
     exports: [
         BlockchainWalletServiceProvider,
-        TransactionBlockchainServiceProvider
+        BlockchainTransactionServiceProvider
     ]
 })
 

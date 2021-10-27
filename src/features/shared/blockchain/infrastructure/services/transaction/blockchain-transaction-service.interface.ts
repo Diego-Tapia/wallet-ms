@@ -1,5 +1,5 @@
 import { Transaction } from "src/features/transaction/domain/entities/transaction.entity";
 
-export interface ITransactionBlockchainService {
+export interface IBlockchainTransactionService {
     create(transaction: Transaction):Promise<Transaction>
 }
