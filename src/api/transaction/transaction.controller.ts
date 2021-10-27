@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Inject, Param, UseGuards, Request } from '
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/features/auth/infrastructure/guards/jwt-guards';
-import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
 import { ICreateTransactionApplication } from 'src/features/transaction/application/create-transaction/create-transaction.app.interface';
 import { IGetAllTransactionsApplication } from "src/features/transaction/application/get-all-transaction/get-all-transactions.app.interface";
 import { IGetTransactionByIdApplication } from 'src/features/transaction/application/get-transaction-by-id/get-transaction-by-id-app.interface';
@@ -28,7 +27,7 @@ export class TransactionController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll(@Request() req: RequestModel) {
+  findAll(@Request() req) {
     return this.getAllTransactionsApplication.execute(req);
   }
 

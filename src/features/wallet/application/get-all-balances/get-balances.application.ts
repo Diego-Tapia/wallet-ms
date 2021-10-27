@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { BlockchainTypes } from "src/features/shared/blockchain/blockchain.types";
 import { IBlockhainWalletServices } from "src/features/shared/blockchain/infrastructure/services/wallet/blockchain-wallet.interface";
-import { BlockchainTypes } from "src/features/shared/blockchain/blockchain.type";
 import { IGetBalances } from "../../domain/interfaces/getbalances.interface";
 import { IGetBalancesApplication } from "./get-balances.app.interface";
 
