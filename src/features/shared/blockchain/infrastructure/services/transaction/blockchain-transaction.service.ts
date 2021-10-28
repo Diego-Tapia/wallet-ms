@@ -2,7 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigType } from "@nestjs/config";
 import { AxiosResponse } from "axios";
-import { lastValueFrom, Observable } from "rxjs";
+import { catchError, map, Observable } from "rxjs";
 import configs from "src/configs/environments/configs";
 import { Transaction } from "src/features/transaction/domain/entities/transaction.entity";
 import { AxiosException } from "../errors/axios.exception";
@@ -20,13 +20,14 @@ export class BlockchainTransactionService implements IBlockchainTransactionServi
         this.BLOCKCHAIN_URL = this.configServise.blockchain_ms.url;
     }
 
-    public async create(transaction: Transaction) {
-        try {
-            const apiResponse: Observable<AxiosResponse<Transaction>> = this.httpService.post<Transaction>(`${this.BLOCKCHAIN_URL}/api/transaction`, transaction);
-            const promiseApiResponse: AxiosResponse<Transaction> = await lastValueFrom(apiResponse);
-            return promiseApiResponse.data
-        } catch (error) {
-            throw new AxiosException(error)
+    public create(transaction: Transaction): Observable<Transaction> {
+        const configs = { 
+            headers:{'Content-type': 'application/json; charset=UTF-8'},
         }
+        return this.httpService.post<Transaction>(`${this.BLOCKCHAIN_URL}/posts`, transaction, configs)
+            .pipe(
+                map((res: AxiosResponse<Transaction>) => res.data), 
+                catchError(error => { throw new AxiosException(error) })
+            )
     }
 }
