@@ -15,10 +15,6 @@ export class ValidateWalletToTransactionMiddleware implements NestMiddleware {
 
 
   async use(req: Request<any, any, CreateTransactionDto>, res: Response, next: NextFunction) {
-      // Request<P = core.ParamsDictionary, ResBody = any, ReqBody = any, ...>>
-      // ¿Afecta en algo cambiar primer tipo de dato de Request? 
-      // por defecto es: <P = core.ParamsDictionary, ...>
-      // ¿existe otra manera de saltarse los dos primero y solo cambiar ReqBody?
     try {
       const dni  = req.body.dni;
       const walletTo = await this.userRepository.findOne(dni);
