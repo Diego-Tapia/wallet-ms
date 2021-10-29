@@ -31,9 +31,18 @@ export class WalletController {
     return this.getBalancesApplication.execute(req.user.idWallet)
   }
 
-  @Get()
+  @Get('test')
   findAll() {
-    // return this.walletService.findAll();
+    return {
+      address: 'ADDRESS',
+      privateKey: 'PRIVKEY',
+      balances: [
+        {
+          token_id: 'token_id_test',
+          amount: 3000
+        }
+      ]  
+    }
   }
 
   @Get(':id')
