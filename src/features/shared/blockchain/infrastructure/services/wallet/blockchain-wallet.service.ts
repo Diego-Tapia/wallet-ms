@@ -22,13 +22,13 @@ export class BlockchainWalletService implements IBlockhainWalletServices{
     this.BLOCKCHAIN_URL = this.configService.blockchain_ms.url
   }
 
-  findOne(wallet_id: string): Observable<Wallet>{
-    return 
-    // return this.httpService.get(`${this.BLOCKCHAIN_URL}wallet/${wallet_id}`)
-    //   .pipe(
-    //     map((response: AxiosResponse) => { return response.data }),
-    //     catchError((error: AxiosError) => { throw new AxiosException(error) })
-    //   )
+  async findOne(wallet_id: string): Promise<Wallet>{
+    try {
+      // const response = await this.axios.get(`${this.BLOCKCHAIN_URL}wallet/${wallet_id}`) 
+      const response = await this.axios.get(`http://localhost:3000/api/wallet/test`) 
+      return response.data
+    } catch (error) {
+      throw new AxiosException(error)
+    }
   }
-
 }

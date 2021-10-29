@@ -1,14 +1,16 @@
+import { IBalances } from "../interfaces/balances.interface";
+
 export class Wallet {
   address: string;
   privateKey: string;
   _id?:string;
-  balances?:object[];
+  balances?:IBalances[];
 
   constructor(
     address: string,
     privatekey: string,
     _id?: string,
-    balances?:object[],
+    balances?:IBalances[],
     
 
 ) {
