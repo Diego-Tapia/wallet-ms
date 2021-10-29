@@ -1,5 +1,4 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
 import { BlockchainTypes } from 'src/features/shared/blockchain/blockchain.types';
 import { IBlockchainTransactionService } from 'src/features/shared/blockchain/infrastructure/services/transaction/blockchain-transaction-service.interface';
@@ -14,9 +13,9 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
     private readonly blockchainTransactionService: IBlockchainTransactionService
   ) { }
 
-  public execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Observable<Transaction> {
+  public execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Promise<Transaction> {
     const { hash, amount, notes } = createTransactionDto;
     const transaction = new Transaction(hash, amount, notes);
-    return this.blockchainTransactionService.create(transaction);
+    return this.blockchainTransactionService.create(transaction)
   }
 }
