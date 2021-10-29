@@ -28,7 +28,7 @@ export class WalletController {
   @Get()
   @UseGuards(JwtAuthGuard)
   findBalances(@Request() req:RequestModel) {   
-    return this.getBalancesApplication.execute(req.user.idWallet)
+    return this.getBalancesApplication.execute(req.user.wallet_id)
   }
 
   @Get('test')

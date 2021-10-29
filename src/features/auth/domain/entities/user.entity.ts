@@ -5,6 +5,7 @@ export class User {
     status: string;
     client_id: string;
     _id?:string;
+    wallet_id?: string;
 
 
     constructor(
@@ -13,6 +14,7 @@ export class User {
         status: string,
         client_id: string,
         _id?:string,
+        wallet_id?: string
 
     ) {
         
@@ -20,6 +22,7 @@ export class User {
         this.username = username;
         this.status = status;
         this.client_id = client_id;
-        this._id=_id
+        this._id=_id;
+        this.wallet_id = wallet_id
     }
 }
