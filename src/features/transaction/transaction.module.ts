@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TransactionController } from 'src/api/transaction/transaction.controller';
 import { AuthFeatureModule } from '../auth/auth.module';
 import { BlockchainModule } from '../shared/blockchain/blockchain.module';
+import { LibrarieModule } from '../shared/libaries/librarie.module';
 import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
 import { UserRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
 import { CreateTransactionApplicationProvider } from './application/create-transaction/create-transaction.provider';
@@ -15,6 +16,7 @@ import { TransactionRepositoryProvider } from './infrastructure/repositories/tra
 @Module({
   controllers: [TransactionController],
   imports: [
+    LibrarieModule,
     AuthFeatureModule,
     BlockchainModule,
     MongooseModule.forFeature([{ name: TransactionModel.name, schema: TransactionSchema },{ name: UserProfileModel.name, schema: UserProfileSchema }]),

@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Body, Inject, Param, UseGuards, Request } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/features/auth/infrastructure/guards/jwt-guards';
 import { ICreateTransactionApplication } from 'src/features/transaction/application/create-transaction/create-transaction.app.interface';
@@ -22,7 +21,7 @@ export class TransactionController {
 
   @Post()
   create(@Body() createTransactionDto: CreateTransactionDto,@Request() req) {
-    return this.createTransactionApplication.execute(createTransactionDto,req);
+    return this.createTransactionApplication.execute(createTransactionDto,req)
   }
 
   @Get()

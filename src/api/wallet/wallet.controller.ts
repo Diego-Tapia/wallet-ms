@@ -20,10 +20,6 @@ export class WalletController {
     private readonly getBalancesApplication: IGetBalancesApplication
   ) {}
 
-  @Post()
-  create(@Body() createWalletDto: CreateWalletDto) {
-    return this.createWalletAplication.execute(createWalletDto);
-  }
 
   @Get()
   @UseGuards(JwtAuthGuard)

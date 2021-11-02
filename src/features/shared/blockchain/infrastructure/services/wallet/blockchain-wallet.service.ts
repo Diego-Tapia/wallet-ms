@@ -1,11 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigType } from "@nestjs/config";
-import { AxiosError, AxiosInstance } from "axios";
-import { Observable } from "rxjs";
+import { AxiosInstance } from "axios";
 import configs from "src/configs/environments/configs";
 import { LibrarieTypes } from "src/features/shared/libaries/librarie.types";
 import { Wallet } from "src/features/wallet/domain/entities/wallet.entity";
-import { AxiosException } from "../errors/axios.exception";
 import { IBlockhainWalletServices } from "./blockchain-wallet.interface";
 
 
@@ -23,12 +21,11 @@ export class BlockchainWalletService implements IBlockhainWalletServices{
   }
 
   async findOne(wallet_id: string): Promise<Wallet>{
-    try {
-      // const response = await this.axios.get(`${this.BLOCKCHAIN_URL}wallet/${wallet_id}`) 
-      const response = await this.axios.get(`http://localhost:3000/api/wallet/test`) 
+    try { 
+      const response = await this.axios.get(`${this.BLOCKCHAIN_URL}/${wallet_id}`) 
       return response.data
     } catch (error) {
-      throw new AxiosException(error)
+      console.log("Error wallet service",error.message)
     }
   }
 }

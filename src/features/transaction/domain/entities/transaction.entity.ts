@@ -2,9 +2,9 @@ export class Transaction {
   hash: string;
   amount: number;
   notes: string;
-  userId: string;
-  transactionType?: string;
   token: string;
+  userId: string;
+  transactionType?: string; 
   walletFrom: string;
   walletTo: string;
 
@@ -12,18 +12,18 @@ export class Transaction {
     hash: string,
     amount: number,
     notes: string,
+    token: string,
     userId?: string,
     transactionType?:string,
-    token?: string,
     walletFrom?: string,
     walletTo?: string,
   ) {
     this.hash = hash;
     this.amount = amount; 
     this.notes = notes;
-    this.userId = userId;
-    this.transactionType = transactionType;
     this.token = token;
+    this.userId = userId;
+    this.transactionType = transactionType; 
     this.walletFrom = walletFrom;
     this.walletTo = walletTo;
 
