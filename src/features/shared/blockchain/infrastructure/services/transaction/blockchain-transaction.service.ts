@@ -16,17 +16,18 @@ export class BlockchainTransactionService implements IBlockchainTransactionServi
     constructor(
         @Inject(configs.KEY) private readonly configServise: ConfigType<typeof configs>,
         @Inject(LibrarieTypes.AXIOS) private readonly axios: AxiosInstance
-    ) { 
+    ) {
         this.BLOCKCHAIN_URL = this.configServise.blockchain_ms.url;
     }
 
     public async create(transaction: Transaction): Promise<Transaction> {
-        const configs = { headers:{'Content-type': 'application/json; charset=UTF-8'} }
+        const configs = { headers: { 'Content-type': 'application/json; charset=UTF-8' } }
         try {
-            const apiResponse = await this.axios.post<Transaction>(`${this.BLOCKCHAIN_URL}/posts`, transaction, configs)
+            const apiResponse = await this.axios.post<Transaction>(`${this.BLOCKCHAIN_URL}`, transaction, configs)
             return apiResponse.data
         } catch (error) {
-            throw new AxiosException(error)
+            throw new Error(error.message)
         }
     }
 }
+

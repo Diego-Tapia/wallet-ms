@@ -11,10 +11,6 @@ export class TransactionRepository implements ITransactionRepository {
     @InjectModel(TransactionModel.name) private readonly transactionModel: Model<TransactionModel>,
   ) {}
 
-  public async create(transaction: Transaction): Promise<Transaction> {
-    const savedTransaction = await new this.transactionModel(transaction).save();
-    return this.toDomainEntity(savedTransaction);
-  }
   public async findAll(filter: IIdWalletFilter): Promise<Transaction[]> {
     const transactionModels = await this.transactionModel.find((filter))
       .sort({ createdAt: -1 })
@@ -28,11 +24,12 @@ export class TransactionRepository implements ITransactionRepository {
   }
 
   private toDomainEntity(model: TransactionModel): Transaction {
-    const { hash, token_id,walletFrom_id,walletTo_id,amount,user_id,notes } = model;
+    const { hash,walletFrom_id,walletTo_id,amount,user_id,notes,token_id } = model;
     const transactionEntity = new Transaction(
       hash,
       amount,
       notes,
+      token_id.toString(),
 
     );
     return transactionEntity;
