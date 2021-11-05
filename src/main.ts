@@ -18,6 +18,7 @@ async function bootstrap() {
     .setTitle('Interconomy wallet Microservice')
     .setDescription('service that consumes the blockchain api')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

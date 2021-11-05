@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserI } from '../../infrastructure/interfaces/user.interface';
 import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
 import { UserTypes } from 'src/features/user_profile/user.types';
+import { AuthResponse } from '../../infrastructure/models/authResponse.entity';
 @Injectable()
 export class UserLoginApplication implements IUserAuthLoginApplication {
   private userPool: CognitoUserPool;
@@ -30,7 +31,7 @@ export class UserLoginApplication implements IUserAuthLoginApplication {
     });
   }
 
-  public async execute(userLoginDTO: UserLoginDTO){
+  public async execute(userLoginDTO: UserLoginDTO):Promise<AuthResponse>{
     const { username, password } = userLoginDTO;
     const login = new Login(username, password);
 
