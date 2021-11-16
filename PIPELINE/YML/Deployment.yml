@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: walletbff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: walletbff
+  template:
+    metadata:
+      labels:
+        app: walletbff
+    spec:
+      containers:
+      - name: walletbff
+        image: 759603056066.dkr.ecr.us-east-1.amazonaws.com/wallet-bff:1.0.0.1
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: walletbff-svc
+spec:
+  type: NodePort
+  ports:
+  - port: 3005
+    targetPort: 3005
+  selector:
+    app: walletbff
