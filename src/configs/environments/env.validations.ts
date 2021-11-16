@@ -13,8 +13,6 @@ export default Joi.object({
   SQS_PASS: Joi.string().required(),
   COGNITO_USER_POOL_ID: Joi.string().required(),
   COGNITO_CLIENT_ID: Joi.string().required(),
-  COGNITO_REGION: Joi.string().required(),
-  AUTHORITY: Joi.string().required(),
   SECRET: Joi.string().required(),
   BLOCKCHAIN_URL: Joi.string().required(),
   AWS_SECRET_ACCESS_KEY:Joi.string().required(),
