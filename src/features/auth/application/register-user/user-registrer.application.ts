@@ -3,14 +3,13 @@ import { UserAuthTypes } from '../../auth.types';
 import { IUserAuthRegisterApplication } from './user-registrer.app.interface';
 import { IUserAuthRepository } from '../../infrastructure/repositories/auth-user-repository.interface';
 import { UserRegisterDTO } from '../../infrastructure/dto/user-register.dto';
-import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
-import { Wallet } from 'src/features/wallet/domain/entities/wallet.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
 import { UserTypes } from 'src/features/user_profile/user.types';
 import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
 import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
 import { User } from '../../domain/entities/user.entity';
-let mongoose = require('mongoose');
+import { InjectConnection } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 
 
 @Injectable()
@@ -20,46 +19,65 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
     private readonly userAuthRepository: IUserAuthRepository,
     @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userRepository: IUserRepository,
-    @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly walletRepository: IWalletRepository,
+    @InjectConnection()
+    private readonly connection: Connection
   ) { }
 
   public async execute(userRegisterDto: UserRegisterDTO): Promise<any> {
-    const { client_id,email, password, dni, shortName, lastName, cuil, phoneNumber, avatar_url, username, custom_id } =
-      userRegisterDto;
 
-    const userExists = await this.userRepository.findOne(dni);
+    const session = await this.connection.startSession();
 
-    if (userExists) {
-      throw new ConflictException('DNI is already registered');
+    try {
+      session.startTransaction();
+      const { client_id, email, password, dni, shortName, lastName, cuil, phoneNumber, avatar_url, username, custom_id } =
+        userRegisterDto;
+
+      const userExists = await this.userRepository.findOne(dni);
+
+      if (userExists) {
+        throw new ConflictException('DNI is already registered');
+      }
+
+      if (userExists === null) {
+        const userRegister = new Register(username, email, password);
+        await this.userAuthRepository.register(userRegister);
+
+        const user = new User(
+          custom_id,
+          username,
+          "PENDING_APPROVE",
+          client_id
+
+        )
+        const userSaved = await this.userAuthRepository.create(user)
+
+        const userProfile = new UserProfile(
+          shortName,
+          lastName,
+          dni,
+          cuil,
+          email,
+          avatar_url,
+          phoneNumber,
+          userSaved._id.toString()
+        );
+        await this.userRepository.create(userProfile);
+
+        await session.commitTransaction();
+        session.endSession();
+
+      }
+
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
+
+    }
+    finally {
+      session.endSession();
     }
 
-    if (userExists === null) {
-      const userRegister = new Register(username, email, password);
-      await this.userAuthRepository.register(userRegister);
-     
-      const user = new User(
-        custom_id,
-        username,
-        "PENDING_APPROVE",
-        client_id
-
-      )
-      const userSaved = await this.userAuthRepository.create(user)
-  
-      
-      const userProfile = new UserProfile(
-        shortName,
-        lastName,
-        dni,
-        cuil,
-        email,
-        avatar_url,
-        phoneNumber,
-        userSaved._id.toString() 
-      );
-      await this.userRepository.create(userProfile);
-
-    }
   }
+
 }
