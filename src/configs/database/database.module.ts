@@ -10,7 +10,7 @@ import configs from '../environments/configs';
   imports: [
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.URI,
+        uri: 'mongodb+srv://userTest:<password>@interconomy-cluster.ksulu.mongodb.net/interconomy',
       }),
     })
   ],
