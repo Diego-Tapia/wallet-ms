@@ -27,7 +27,7 @@ import { UserModel, UserSchema } from './infrastructure/models/user.entity';
       inject: [ConfigService],
       useFactory:( config: ConfigService) => {
         return {
-          secret: config.get('secret'),
+          secret: process.env.JWT_SECRET,
           signOptions: { expiresIn: '3600s' },
          }
       }

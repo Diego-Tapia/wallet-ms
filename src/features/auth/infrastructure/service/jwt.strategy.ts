@@ -4,7 +4,8 @@ import { Inject, Injectable} from '@nestjs/common';
 import configs from 'src/configs/environments/configs';
 import { ConfigType } from '@nestjs/config';
 import { RequestModel } from './middleware/auth.middleware';
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -12,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     config: ConfigType<typeof configs>
   ) {
     super({
-      secretOrKey:'1234',
+      secretOrKey: config.secret.secret,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
     });

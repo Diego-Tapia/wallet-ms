@@ -17,7 +17,7 @@ export default registerAs('configs', () => ({
     client_id: process.env.COGNITO_CLIENT_ID,
   },
   secret:{
-    secret: process.env.SECRET,
+    secret: process.env.JWT_SECRET,
   },
   blockchain_ms:{
     url: process.env.BLOCKCHAIN_URL,
