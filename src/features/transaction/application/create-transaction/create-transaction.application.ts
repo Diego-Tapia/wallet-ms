@@ -25,7 +25,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
   public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Promise<any> {
 
     const config = {
-      region: process.env.REGION,
+      region: 'us-east-2',
       credentials: {
         accessKeyId: this.configService.sqs.accesKeyId,
         secretAccessKey: this.configService.sqs.secretAccessKey,
