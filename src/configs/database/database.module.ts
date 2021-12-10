@@ -8,17 +8,10 @@ import configs from '../environments/configs';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      useFactory: (configService: ConfigType<typeof configs>) => {
-        const { engine, name, host, port, user, pass } = configService.database;
-        return {
-          uri: `${engine}://${host}:${port}`,
-          user,
-          pass,
-          dbName: name,
-        };
-      },
-      inject: [configs.KEY],
-    }),
+      useFactory: () => ({
+        uri: process.env.URI,
+      }),
+    })
   ],
 })
 export class DatabaseModule {}

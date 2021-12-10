@@ -30,7 +30,7 @@ import { WalletFeatureModule } from '../wallet/wallet.module';
       inject: [ConfigService],
       useFactory:( config: ConfigService) => {
         return {
-          secret: config.get('secret'),
+          secret: process.env.JWT_SECRET,
           signOptions: { expiresIn: '3600s' },
          }
       }
