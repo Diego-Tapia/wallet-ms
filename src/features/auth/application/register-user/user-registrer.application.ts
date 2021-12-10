@@ -10,6 +10,8 @@ import { UserProfile } from 'src/features/user_profile/domain/entities/user.enti
 import { User } from '../../domain/entities/user.entity';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { WalletTypes } from 'src/features/wallet/wallet.type';
+import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
 
 
 @Injectable()
@@ -20,7 +22,9 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
     @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userRepository: IUserRepository,
     @InjectConnection()
-    private readonly connection: Connection
+    private readonly connection: Connection,
+    @Inject(WalletTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly walletRepository: IWalletRepository
   ) { }
 
   public async execute(userRegisterDto: UserRegisterDTO): Promise<any> {
@@ -40,15 +44,22 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
 
       if (userExists === null) {
         const userRegister = new Register(username, email, password);
+
+        const wallet = await this.walletRepository.create({
+          address: 'address_1',
+          privateKey: 'privateKey_1'
+        })
+
         await this.userAuthRepository.register(userRegister);
 
         const user = new User(
           custom_id,
           username,
           "PENDING_APPROVE",
-          client_id
-
+          client_id,
+          wallet._id          
         )
+          
         const userSaved = await this.userAuthRepository.create(user)
 
         const userProfile = new UserProfile(

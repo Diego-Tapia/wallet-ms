@@ -3,10 +3,6 @@ import { IsNotEmpty, IsMongoId, IsNumber, IsString } from 'class-validator';
 
 export class CreateTransactionDto {
 
-  @IsString()
-  @IsNotEmpty()
-  public readonly hash: string;
-
   @IsMongoId()
   @IsNotEmpty()
   public readonly token: string;
@@ -24,5 +20,4 @@ export class CreateTransactionDto {
   @Type(() => Number)
   @IsNotEmpty()
   public readonly dni: number;
-
 }

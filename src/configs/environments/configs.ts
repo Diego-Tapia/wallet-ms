@@ -13,9 +13,13 @@ export default registerAs('configs', () => ({
     pass: process.env.DB_PASS,
   },
   sqs: {
+    host: process.env.SQS_HOST,
+    user: process.env.SQS_USER,
+    pass: process.env.SQS_PASS,
     url_t: process.env.SQS_T_URL,
     accesKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sqs_endpoint_url: process.env.SQS_ENDPOINT_URL,
   },
   cognito: {
     user_pool: process.env.COGNITO_USER_POOL_ID,

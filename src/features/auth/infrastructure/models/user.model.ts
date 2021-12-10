@@ -20,8 +20,8 @@ export class UserModel extends Document {
   @Prop({ type: Types.ObjectId, ref: ClientModel.name })
   client_id: ClientModel | Types.ObjectId; 
 
-/*   @Prop({ type: Types.ObjectId, ref: WalletModel.name })
-  wallet_id: WalletModel | Types.ObjectId; */
+  @Prop({ type: Types.ObjectId, ref: WalletModel.name })
+  wallet_id: WalletModel | Types.ObjectId;
 
 
 }

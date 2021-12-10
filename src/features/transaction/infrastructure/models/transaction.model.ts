@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { UserModel } from 'src/features/auth/infrastructure/models/user.entity';
+import { UserModel } from 'src/features/auth/infrastructure/models/user.model';
 import { TokenModel } from 'src/features/token/infrastructure/models/token.model';
 import { WalletModel } from 'src/features/wallet/infrastructure/models/wallet.model';
 

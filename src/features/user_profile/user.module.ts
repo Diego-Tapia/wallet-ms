@@ -9,7 +9,9 @@ import { GetUserByIdApplicationProvider } from './application/get-user-by-id/get
 
 @Module({
   controllers: [],
-  imports: [MongooseModule.forFeature([{ name: UserProfileModel.name, schema: UserProfileSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: UserProfileModel.name, schema: UserProfileSchema }])
+  ],
   providers: [
     UserRepositoryProvider,
     CreateUserApplicationProvider,
