@@ -11,12 +11,16 @@ import { WalletRepositoryProvider } from './infrastructure/repositories/wallet-r
   controllers: [],
   imports: [
     MongooseModule.forFeature([{ name: WalletModel.name, schema: WalletSchema }]),
-    BlockchainModule
+    BlockchainModule,
+    WalletFeatureModule
   ],
   providers: [
     CreateWalletApplicationProvider,
     GetBalancesApplicationProvider,
     WalletRepositoryProvider,
+  ],
+  exports: [
+    WalletRepositoryProvider
   ]
 })
 export class WalletFeatureModule {}

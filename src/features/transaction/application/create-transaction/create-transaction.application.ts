@@ -1,65 +1,77 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
 import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
-import { BlockchainTypes } from 'src/features/shared/blockchain/blockchain.types';
-import { IBlockchainTransactionService } from 'src/features/shared/blockchain/infrastructure/services/transaction/blockchain-transaction-service.interface';
-import { Transaction } from '../../domain/entities/transaction.entity';
 import { CreateTransactionDto } from '../../infrastructure/dtos/create-transaction.dto';
 import { ICreateTransactionApplication } from './create-transaction.app.interface';
-import configs from 'src/configs/environments/configs';
-import { ConfigType } from '@nestjs/config';
-import { LibrarieTypes } from 'src/features/shared/libaries/librarie.types';
-import axios, { AxiosInstance } from 'axios';
-
-import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
-import { stringify } from 'querystring';
+import { QueueEmitterTypes } from 'src/features/queue_emitter/queue-emitter.types';
+import { IQueueEmitterTransactionApplication } from 'src/features/queue_emitter/application/transaction/queue-emitter-transaction-app.interface';
+import { WalletTypes } from 'src/features/wallet/wallet.type';
+import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
+import { UserTypes } from 'src/features/user_profile/user.types';
+import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { ETransactionTypes } from 'src/features/transaction_type/domain/enums/transaction-types.enum';
+import { ITransactionQueueMessage } from 'src/features/queue_emitter/domain/interfaces/transaction-queue-message.interface';
+import { UserAuthTypes } from 'src/features/auth/auth.types';
+import { IUserAuthRepository } from 'src/features/auth/infrastructure/repositories/auth-user-repository.interface';
+import { IApiResponse } from 'src/features/shared/interfaces/api-response.interface';
 
 @Injectable()
 export class CreateTransactionApplication implements ICreateTransactionApplication {
   constructor(
-    @Inject(BlockchainTypes.INFRASTRUCTURE.TRANSACTION)
-    private readonly blockchainTransactionService: IBlockchainTransactionService,
-    @Inject(configs.KEY)
-    private readonly configService: ConfigType<typeof configs>,
+    @Inject(QueueEmitterTypes.APPLICATION.EMITTER_TRANSACTION)
+    private readonly queueEmitterTransactionApplication: IQueueEmitterTransactionApplication,
+    @Inject(WalletTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly walletRepository : IWalletRepository,
+    @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly userProfileRepository: IUserRepository,
+    @Inject(UserAuthTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly userAuthRepository: IUserAuthRepository
   ) { }
 
-  public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Promise<any> {
+  public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel): Promise<IApiResponse<any>> {
 
-    const config = {
-      region: process.env.REGION,
-      credentials: {
-        accessKeyId: this.configService.sqs.accesKeyId,
-        secretAccessKey: this.configService.sqs.secretAccessKey,
+    const { amount, notes, token, dni } = createTransactionDto;
+    try {
+      
+      const userProfile = await this.userProfileRepository.findOne(dni);
+      if (!userProfile) throw new BadRequestException(`There is no user with the DNI ${dni}`)
+      
+      const user = await this.userAuthRepository.findById(userProfile.user_id);
+      
+      const walletTo = await this.walletRepository.findById(user.wallet_id);
+
+      const walletFrom = await this.walletRepository.findById(req.user.wallet_id);
+      if (!walletFrom) throw new BadRequestException('no wallet')
+
+      const transaction: ITransactionQueueMessage = {
+        amount,
+        token,
+        transactionType: ETransactionTypes.TRANSFER,
+        userId: req.user._id,
+        walletFrom: walletFrom._id,
+        walletTo: walletTo._id,
+        notes
+      } 
+
+      this.queueEmitterTransactionApplication.execute(transaction)
+
+      let response: IApiResponse<ITransactionQueueMessage> = {
+        status: 200,
+        message: 'Transaferencia en progreso',
+        success: true,
+        data: transaction,
+      };
+
+      return response;
+    
+    } catch (error) {
+      let response: IApiResponse<null> = {
+        status: 400,
+        message: error.message || 'no se pude realizar la transaferencia',
+        success: false,
+        data: error.response || error,
       }
-    };
-
-
-    const sqsClient = new SQSClient(config);
-
-
-    const { hash, amount, notes, token } = createTransactionDto;
-    const transaction = new Transaction(hash, amount, notes, token);
-
-
-
-
-    const params = {
-      MessageBody: JSON.stringify(transaction),
-      QueueUrl: this.configService.sqs.url_t,
-    };
-
-    const run = async () => {
-      try {
-        await sqsClient.send(new SendMessageCommand(params));
-      } catch (err) {
-        throw new Error(err.message);
-      }
-    };
-    run();
-
-
-    return this.blockchainTransactionService.create(transaction)
-
-
+      return response;
+    }
   }
 }
 

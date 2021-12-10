@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Inject, Injectable, NestMiddleware } from '@nestjs/common';
+import { Console } from 'console';
 import { Request, Response, NextFunction } from 'express';
 import { UserAuthTypes } from 'src/features/auth/auth.types';
 import { User } from 'src/features/auth/domain/entities/user.entity';

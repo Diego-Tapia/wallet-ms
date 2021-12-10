@@ -18,7 +18,7 @@ import { Login } from '../../domain/entities/authLoginUser.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
 import { User } from '../../domain/entities/user.entity';
 import { UserI } from '../interfaces/user.interface';
-import { UserModel } from '../models/user.entity';
+import { UserModel } from '../models/user.model';
 import { IUserAuthRepository } from './auth-user-repository.interface';
 
 @Injectable()
@@ -116,6 +116,11 @@ export class UserAuthRepository implements IUserAuthRepository {
     return userModel ? this.toDomainEntity(userModel) : null;
   }
 
+    public async findById(id: string): Promise<User> {
+    const userModel = await this.userModel.findById(id).exec();
+    return userModel ? this.toDomainEntity(userModel) : null
+  }
+
   public async create(user: User): Promise<User> {
     const savedUser = await new this.userModel(user).save();
     return this.toDomainEntity(savedUser);
@@ -123,13 +128,14 @@ export class UserAuthRepository implements IUserAuthRepository {
 
 
   private toDomainEntity(model: UserModel): User {
-    const { custom_id, username, status,client_id,_id } = model;
+    const { custom_id, username, status,client_id,_id, wallet_id } = model;
     const userEntity = new User(
       custom_id,
       username,
       status,
       client_id.toString(),
       _id.toString(),
+     '6103f2582e4f4f0b64abd1cf'
     );
     return userEntity;
   }

@@ -7,7 +7,7 @@ import { UserAuthTypes } from 'src/features/auth/auth.types';
 import { UserConfirmDTO } from 'src/features/auth/infrastructure/dto/user-confirm.dto';
 import { UserLoginDTO } from 'src/features/auth/infrastructure/dto/user-login.dto';
 import { UserRegisterDTO } from 'src/features/auth/infrastructure/dto/user-register.dto';
-import { AuthResponse } from 'src/features/auth/infrastructure/models/authResponse.entity';
+import { AuthResponse } from 'src/features/auth/infrastructure/models/authResponse.model';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {

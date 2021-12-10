@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserI } from '../../infrastructure/interfaces/user.interface';
 import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
 import { UserTypes } from 'src/features/user_profile/user.types';
-import { AuthResponse } from '../../infrastructure/models/authResponse.entity';
+import { AuthResponse } from '../../infrastructure/models/authResponse.model';
 @Injectable()
 export class UserLoginApplication implements IUserAuthLoginApplication {
   private userPool: CognitoUserPool;

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { UserModel } from 'src/features/auth/infrastructure/models/user.entity';
+import { UserModel } from 'src/features/auth/infrastructure/models/user.model';
 @Schema({
   timestamps: true,
 })
