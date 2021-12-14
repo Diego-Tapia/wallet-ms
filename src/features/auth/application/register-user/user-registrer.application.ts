@@ -52,13 +52,15 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
 
         await this.userAuthRepository.register(userRegister);
 
-        const user = new User(
+        const user = new User({
           custom_id,
           username,
-          "PENDING_APPROVE",
+          status: "PENDING_APPROVE",
           client_id,
-          wallet._id          
-        )
+          wallet_id: wallet._id          
+        })
+
+        console.log(user)
           
         const userSaved = await this.userAuthRepository.create(user)
 
