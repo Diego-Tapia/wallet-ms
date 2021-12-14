@@ -24,14 +24,17 @@ export class TransactionRepository implements ITransactionRepository {
   }
 
   private toDomainEntity(model: TransactionModel): Transaction {
-    const { hash,walletFrom_id,walletTo_id,amount,user_id,notes,token_id } = model;
-    const transactionEntity = new Transaction(
+    const { hash, walletFromId, walletToId, amount, userId, notes, tokenId, transactionTypeId } = model;
+    const transactionEntity = new Transaction({
       hash,
       amount,
       notes,
-      token_id.toString(),
-
-    );
+      token: tokenId.toString(),
+      transactionType: transactionTypeId.toString(),
+      user: userId.toString(),
+      walletFrom: walletFromId.toString(),
+      walletTo: walletToId.toString()
+    });
     return transactionEntity;
   }
 }
