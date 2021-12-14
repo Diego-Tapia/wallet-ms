@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from '../../api/auth/auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './infrastructure/service/jwt.strategy';
-import { ConfigModule, ConfigService, registerAs } from '@nestjs/config';
+import { ConfigModule, ConfigService, ConfigType, registerAs } from '@nestjs/config';
 import configs from 'src/configs/environments/configs';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserAuthRepositoryProvider } from './infrastructure/repositories/auth-user-repository.provider';
@@ -27,10 +27,10 @@ import { WalletFeatureModule } from '../wallet/wallet.module';
       { name: UserProfileModel.name, schema: UserProfileSchema }]),
     PassportModule,
     JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory:( config: ConfigService) => {
+      inject: [configs.KEY],
+      useFactory:(config: ConfigType<typeof configs>) => {
         return {
-          secret: config.get('secret'),
+          secret: config.secret.secret,
           signOptions: { expiresIn: '3600s' },
          }
       }
