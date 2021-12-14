@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import configs from 'src/configs/environments/configs';
-import { ITransactionQueueMessage } from '../../domain/interfaces/transaction-queue-message.interface';
+import { Transaction } from 'src/features/transaction/domain/entities/transaction.entity';
 import { ISqsEmitterService } from '../../infrastructure/services/sqs/sqs-emitter-service.interface';
 import { QueueEmitterTypes } from '../../queue-emitter.types';
 import { IQueueEmitterTransactionApplication } from './queue-emitter-transaction-app.interface';
@@ -14,7 +14,7 @@ export class QueueEmitterTransactionApplication implements IQueueEmitterTransact
     private readonly configService: ConfigType<typeof configs>,
   ) {}
 
-  execute(message: ITransactionQueueMessage) {
-    this.sqsEmitterService.sendMessage<ITransactionQueueMessage>(this.configService.sqs.url_t, message);
+  execute(message: Transaction) {
+    this.sqsEmitterService.sendMessage<Transaction>(this.configService.sqs.url_t, message);
   }
 }
