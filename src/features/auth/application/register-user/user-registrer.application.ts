@@ -57,7 +57,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
           username,
           status: "PENDING_APPROVE",
           client_id,
-          wallet_id: wallet._id          
+          wallet_id: wallet.id          
         })
 
         console.log(user)

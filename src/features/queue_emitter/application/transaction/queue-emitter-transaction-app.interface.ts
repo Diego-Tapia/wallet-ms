@@ -1,5 +1,5 @@
-import { Transaction } from "src/features/transaction/domain/entities/transaction.entity";
+import { ITransactionQueueMessage } from "../../domain/interfaces/transaction-queue-message.interface";
 
 export interface IQueueEmitterTransactionApplication {
-  execute(message: Transaction): void
+  execute(message: ITransactionQueueMessage): void
 }
