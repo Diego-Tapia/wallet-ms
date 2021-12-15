@@ -59,8 +59,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
           client_id,
           wallet_id: wallet.id          
         })
-
-        console.log(user)
+        
           
         const userSaved = await this.userAuthRepository.create(user)
 

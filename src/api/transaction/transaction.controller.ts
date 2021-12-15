@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Inject, Param, UseGuards, Request } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { JwtAuthGuard } from 'src/features/auth/infrastructure/guards/jwt-guards';
+import { IApiResponse } from 'src/features/shared/interfaces/api-response.interface';
 import { ICreateTransactionApplication } from 'src/features/transaction/application/create-transaction/create-transaction.app.interface';
 import { IGetAllTransactionsApplication } from "src/features/transaction/application/get-all-transaction/get-all-transactions.app.interface";
 import { IGetTransactionByIdApplication } from 'src/features/transaction/application/get-transaction-by-id/get-transaction-by-id-app.interface';

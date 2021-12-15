@@ -15,6 +15,7 @@ import { IApiResponse } from 'src/features/shared/interfaces/api-response.interf
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { ITransactionQueueMessage } from 'src/features/queue_emitter/domain/interfaces/transaction-queue-message.interface';
 
+
 @Injectable()
 export class CreateTransactionApplication implements ICreateTransactionApplication {
   constructor(
@@ -80,7 +81,6 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
         success: false,
         data: error.response || error,
       };
-
       return response
     }
   }

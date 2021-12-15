@@ -31,6 +31,7 @@ import { WalletFeatureModule } from '../wallet/wallet.module';
       useFactory:(config: ConfigType<typeof configs>) => {
         return {
           secret: config.secret.secret,
+
           signOptions: { expiresIn: '3600s' },
          }
       }
