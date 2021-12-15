@@ -1,4 +1,4 @@
-export interface IBalances{
+export interface IBalances {
     tokenId: string,
     amount: number,
 }
