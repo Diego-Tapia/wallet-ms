@@ -136,6 +136,7 @@ export class UserAuthRepository implements IUserAuthRepository {
       clientId: clientId.toString(),
       id: _id.toString(),
       walletId: walletId.toString()
+
     });
     return userEntity;
   }

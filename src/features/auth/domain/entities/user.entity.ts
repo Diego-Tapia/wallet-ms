@@ -22,5 +22,6 @@ export class User {
     this.clientId = clientId;
     this.walletId = walletId;
     this.id = id;
+
   }
 }
