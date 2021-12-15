@@ -15,7 +15,7 @@ export class CreateWalletApplication implements ICreateWalletApplication {
   public execute(createWalletDto: CreateWalletDto): Promise<Wallet> {
     const { id, address, privateKey } = createWalletDto;
 
-    const wallet = new Wallet( address, privateKey);
+    const wallet = new Wallet({address, privateKey});
 
     return this.walletRepository.create(wallet);
   }

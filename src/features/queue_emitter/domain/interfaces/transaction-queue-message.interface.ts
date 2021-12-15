@@ -1,11 +1,12 @@
-import { ETransactionTypes } from "src/features/transaction_type/domain/enums/transaction-types.enum";
-
 export interface ITransactionQueueMessage {
-    transactionType: ETransactionTypes,
-    token: string,
-    amount: number,
-    userId: string,
-    walletFrom: string,
-    walletTo: string,
-    notes?: string,
+  transactionType: ETransactionTypes,
+  tokenId: string;
+  amount: number;
+  userId: string;
+  notes?: string;
+  walletFrom: string;
+  walletTo: string;
+  massiveDecreaseId?: string;
+  massiveIncreaseId?: string;
+  detailId?: number;
 }

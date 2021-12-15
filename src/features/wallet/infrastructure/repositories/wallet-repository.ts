@@ -23,8 +23,15 @@ export class WalletRepository implements IWalletRepository {
   }
 
   private toDomainEntity(model: WalletModel): Wallet {
-    const { address, privateKey, _id } = model;
-    const walletEntity = new Wallet(address, privateKey, _id.toString());
+    const { address, privateKey, _id, balances } = model;
+
+    const walletEntity = new Wallet({
+      address, 
+      privateKey,
+      id: _id.toString(),
+      balances: balances
+    });
+   
     return walletEntity;
   }
 }

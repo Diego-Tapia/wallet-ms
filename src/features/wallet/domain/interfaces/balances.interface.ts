@@ -1,4 +1,4 @@
 export interface IBalances{
-    token_id: string,
+    tokenId: string,
     amount: number,
 }
