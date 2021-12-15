@@ -3,10 +3,10 @@ export class UserProfile {
   lastName: string;
   dni: number;
   cuil: number;
-  avatar_url: string;
+  avatarUrl: string;
   email: string;
   phoneNumber: number;
-  user_id?: string;
+  userId?: string;
 
 
   constructor(
@@ -14,10 +14,10 @@ export class UserProfile {
     lastName: string,
     dni: number,
     cuil: number,
-    avatar_url: string,
+    avatarUrl: string,
     email: string,
     phoneNumber: number,
-    user_id?: string,
+    userId?: string,
 
   ) {
     
@@ -25,10 +25,10 @@ export class UserProfile {
     this.lastName = lastName;
     this.dni = dni;
     this.cuil = cuil;
-    this.avatar_url = avatar_url;
+    this.avatarUrl = avatarUrl;
     this.email = email;
     this.phoneNumber = phoneNumber;
-    this.user_id = user_id;
+    this.userId = userId;
 
   }
 }

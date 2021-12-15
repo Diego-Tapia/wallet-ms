@@ -36,16 +36,16 @@ export class UserRepository implements IUserRepository {
   }
 
   private toDomainEntity(model: UserProfileModel):UserProfile{
-    const { user_id,shortName, lastName, dni, cuil, avatar_url, email, phoneNumber } = model;
+    const { userId,shortName, lastName, dni, cuil, avatarUrl, email, phoneNumber } = model;
     const userEntity = new UserProfile(
       shortName,
       lastName,
       dni,
       cuil,
-      avatar_url,
+      avatarUrl,
       email,
       phoneNumber,
-      user_id.toString()
+      userId.toString()
     );
     return userEntity;
   }

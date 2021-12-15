@@ -128,14 +128,14 @@ export class UserAuthRepository implements IUserAuthRepository {
 
 
   private toDomainEntity(model: UserModel): User {
-    const { custom_id, username, status,client_id,_id, wallet_id } = model;
+    const { customId, username, status, clientId,_id, walletId } = model;
     const userEntity = new User({
-      custom_id,
+      customId,
       username,
       status,
-      client_id: client_id.toString(),
-      _id: _id.toString(),
-      wallet_id: wallet_id.toString()
+      clientId: clientId.toString(),
+      id: _id.toString(),
+      walletId: walletId.toString()
     });
     return userEntity;
   }

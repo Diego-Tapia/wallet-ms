@@ -34,11 +34,11 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
       const userProfile = await this.userProfileRepository.findOne(dni);
       if (!userProfile) throw new BadRequestException(`There is no user with the DNI ${dni}`);
 
-      const user = await this.userAuthRepository.findById(userProfile.user_id);
+      const user = await this.userAuthRepository.findById(userProfile.userId);
 
-      const walletTo = await this.walletRepository.findById(user.wallet_id);
+      const walletTo = await this.walletRepository.findById(user.walletId);
       
-      const walletFrom = await this.walletRepository.findById(req.user.wallet_id);
+      const walletFrom = await this.walletRepository.findById(req.user.walletId);
       if (!walletFrom) throw new BadRequestException('no wallet');
 
       // VALIDAR QUE WALLETFROM CUENTE CON EL SALDO SUFICIENTE PARA TRANSFERIR
@@ -49,7 +49,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
         amount,
         token,
         transactionType: ETransactionTypes.TRANSFER,
-        user: req.user._id,
+        user: req.user.id,
         walletFrom: walletFrom.id,
         walletTo: walletTo.id,
         notes,
