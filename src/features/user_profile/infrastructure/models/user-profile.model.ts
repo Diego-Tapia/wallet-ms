@@ -7,7 +7,7 @@ import { UserModel } from 'src/features/auth/infrastructure/models/user.model';
 export class UserProfileModel extends Document {
 
   @Prop({ type: Types.ObjectId, ref: UserModel.name })
-  user_id: UserModel | Types.ObjectId;
+  userId: UserModel | Types.ObjectId;
 
   @Prop({ required: true })
   shortName: string;
@@ -22,7 +22,7 @@ export class UserProfileModel extends Document {
   cuil: number;
 
   @Prop({ required: true })
-  avatar_url: string;
+  avatarUrl: string;
 
   @Prop({ required: true })
   email: string;

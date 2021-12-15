@@ -47,14 +47,14 @@ export class UserRegisterDTO {
 
   @IsString()
   @IsNotEmpty()
-  avatar_url: string;
+  avatarUrl: string;
 
   @IsString()
   @IsNotEmpty()
-  custom_id: string;
+  customId: string;
 
   @IsMongoId()
   @IsNotEmpty()
-  client_id: string;
+  clientId: string;
 
 }
