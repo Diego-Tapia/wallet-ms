@@ -33,7 +33,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
 
     try {
       session.startTransaction();
-      const { client_id, email, password, dni, shortName, lastName, cuil, phoneNumber, avatar_url, username, custom_id } =
+      const { clientId, email, password, dni, shortName, lastName, cuil, phoneNumber, avatarUrl, username, customId } =
         userRegisterDto;
 
       const userExists = await this.userRepository.findOne(dni);
@@ -53,14 +53,13 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
         await this.userAuthRepository.register(userRegister);
 
         const user = new User({
-          custom_id,
+          customId,
           username,
           status: "PENDING_APPROVE",
-          client_id,
-          wallet_id: wallet.id          
+          clientId,
+          walletId: wallet.id          
         })
-        
-          
+
         const userSaved = await this.userAuthRepository.create(user)
 
         const userProfile = new UserProfile(
@@ -69,9 +68,9 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
           dni,
           cuil,
           email,
-          avatar_url,
+          avatarUrl,
           phoneNumber,
-          userSaved._id.toString()
+          userSaved.id
         );
         await this.userRepository.create(userProfile);
 
@@ -81,6 +80,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
       }
 
     } catch (error) {
+      console.log(error)
       await session.abortTransaction();
       session.endSession();
       throw error;

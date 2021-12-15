@@ -1,26 +1,27 @@
 export interface IUser {
-  custom_id: string;
+  customId: string;
   username: string;
   status: string;
-  client_id: string;
-  wallet_id?: string;
-  _id?: string;
+  clientId: string;
+  walletId?: string;
+  id?: string;
 }
 
 export class User {
-  custom_id: string;
+  customId: string;
   username: string;
   status: string;
-  client_id: string;
-  wallet_id?: string;
-  _id?: string;
+  clientId: string;
+  walletId?: string;
+  id?: string;
 
-  constructor({ custom_id, username, status, client_id, wallet_id, _id }: IUser) {
-    this.custom_id = custom_id;
+  constructor({ customId, username, status, clientId, walletId, id }: IUser) {
+    this.customId = customId;
     this.username = username;
     this.status = status;
-    this.client_id = client_id;
-    this.wallet_id = wallet_id;
-    this._id = _id;
+    this.clientId = clientId;
+    this.walletId = walletId;
+    this.id = id;
+
   }
 }

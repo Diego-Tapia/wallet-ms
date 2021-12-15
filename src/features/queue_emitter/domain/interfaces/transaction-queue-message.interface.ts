@@ -1,5 +1,5 @@
 export interface ITransactionQueueMessage {
-  transactionType: string,
+  transactionType: string;
   tokenId: string;
   amount: number;
   userId: string;

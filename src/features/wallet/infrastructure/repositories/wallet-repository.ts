@@ -31,7 +31,7 @@ export class WalletRepository implements IWalletRepository {
       id: _id.toString(),
       balances: balances
     });
-   
+    
     return walletEntity;
   }
 }

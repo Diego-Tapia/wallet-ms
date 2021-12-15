@@ -13,7 +13,7 @@ export class GetAllTransactionsApplication implements IGetAllTransactionsApplica
   ) {}
 
   public execute(req: RequestModel): Promise<Transaction[]> {
-    const { wallet_id } = req.user;
-    return this.transactionRepository.findAll({ walletFrom: wallet_id } || { walletTo: wallet_id })
+    const { walletId } = req.user;
+    return this.transactionRepository.findAll({ walletFrom: walletId } || { walletTo: walletId })
   }
 }
