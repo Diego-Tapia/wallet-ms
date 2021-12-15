@@ -13,6 +13,7 @@ import { UserAuthTypes } from 'src/features/auth/auth.types';
 import { IUserAuthRepository } from 'src/features/auth/infrastructure/repositories/auth-user-repository.interface';
 import { IApiResponse } from 'src/features/shared/interfaces/api-response.interface';
 import { Transaction } from '../../domain/entities/transaction.entity';
+import { ITransactionQueueMessage } from 'src/features/queue_emitter/domain/interfaces/transaction-queue-message.interface';
 
 @Injectable()
 export class CreateTransactionApplication implements ICreateTransactionApplication {
@@ -36,21 +37,31 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
       const user = await this.userAuthRepository.findById(userProfile.user_id);
 
       const walletTo = await this.walletRepository.findById(user.wallet_id);
-
+      
       const walletFrom = await this.walletRepository.findById(req.user.wallet_id);
       if (!walletFrom) throw new BadRequestException('no wallet');
+
+      // VALIDAR QUE WALLETFROM CUENTE CON EL SALDO SUFICIENTE PARA TRANSFERIR
+      // const balancewalletFromByTokenId = 1500
+      // if (balancewalletFromByTokenId < amount) throw new BadRequestException('Insufficient Balance')
 
       const transaction = new Transaction({
         amount,
         token,
         transactionType: ETransactionTypes.TRANSFER,
         user: req.user._id,
-        walletFrom: walletFrom._id,
-        walletTo: walletTo._id,
+        walletFrom: walletFrom.id,
+        walletTo: walletTo.id,
         notes,
       });
 
-      this.queueEmitterTransactionApplication.execute(transaction);
+      const transactionQueueMessage: ITransactionQueueMessage = {
+        ...transaction,
+        userId: transaction.user,
+        tokenId: transaction.token,
+      }
+
+      this.queueEmitterTransactionApplication.execute(transactionQueueMessage);
 
       let response: IApiResponse<Transaction> = {
         status: 201,
