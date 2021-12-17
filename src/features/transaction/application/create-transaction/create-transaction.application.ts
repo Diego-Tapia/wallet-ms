@@ -80,6 +80,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
         success: false,
         data: error.response || error,
       };
+
       return response
     }
   }
