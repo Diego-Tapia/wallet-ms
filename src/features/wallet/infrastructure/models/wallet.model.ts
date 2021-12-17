@@ -4,7 +4,7 @@ import { TokenModel } from 'src/features/token/infrastructure/models/token.model
 import { IBalances } from '../../domain/interfaces/balances.interface';
 
 @Schema({
-  _id:true, timestamps: true,
+  _id: true, timestamps: true,
 })
 export class WalletModel extends Document {
   @Prop({ required: true })
@@ -13,10 +13,10 @@ export class WalletModel extends Document {
   @Prop({ required: true })
   privateKey: string;
 
-  @Prop(raw({
+  @Prop(raw([{
     tokenId: { type: Types.ObjectId, ref: TokenModel.name },
     amount: { type: Number }
-  }))
+  }]))
   balances: IBalances[];
 
 }
