@@ -16,8 +16,7 @@ export class CreateTransactionDto {
   @IsNotEmpty()
   public readonly notes: string;
 
-  @IsNumber()
-  @Type(() => Number)
+  @IsString()
   @IsNotEmpty()
-  public readonly dni: number;
+  public readonly userIdentifier: string;
 }

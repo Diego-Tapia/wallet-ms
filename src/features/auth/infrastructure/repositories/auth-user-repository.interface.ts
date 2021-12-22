@@ -13,5 +13,6 @@ export interface IUserAuthRepository {
   generateJwt(user: UserI): Promise<any>;
   create(user:User):Promise<any>;
   findById(id: string): Promise<User>
-  findOne(user:any)
+  findOne(user:any): Promise<User>;
+  findOneByParams(param: string): Promise<User>
 }

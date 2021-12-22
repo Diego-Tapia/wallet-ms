@@ -126,6 +126,12 @@ export class UserAuthRepository implements IUserAuthRepository {
     return this.toDomainEntity(savedUser);
   }
 
+  public async findOneByParams(param: string): Promise<User> {
+    const userModel = await this.userModel
+      .findOne( { $or: [ { customId: param }, { username: param } ] } )
+      .exec();
+    return userModel ? this.toDomainEntity(userModel) : null;
+  }
 
   private toDomainEntity(model: UserModel): User {
     const { customId, username, status, clientId,_id, walletId } = model;
