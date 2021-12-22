@@ -6,4 +6,5 @@ export interface IUserRepository {
   findById(id: string): Promise<UserProfile>;
   findOne(dni: any): Promise<UserProfile>;
   findOneUser(user: string): Promise<UserProfile>;
+  findOneByParams(param: number): Promise<UserProfile>;
 }

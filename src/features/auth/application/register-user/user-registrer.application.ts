@@ -12,6 +12,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { WalletTypes } from 'src/features/wallet/wallet.type';
 import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
+import { Wallet } from 'src/features/wallet/domain/entities/wallet.entity';
 
 
 @Injectable()
@@ -45,10 +46,12 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
       if (userExists === null) {
         const userRegister = new Register(username, email, password);
 
-        const wallet = await this.walletRepository.create({
+        const newWallet = new Wallet({
           address: 'address_1',
-          privateKey: 'privateKey_1'
+          privateKey: 'privateKey_1',
         })
+        
+        const wallet = await this.walletRepository.create(newWallet)
 
         await this.userAuthRepository.register(userRegister);
 
@@ -62,7 +65,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
 
         const userSaved = await this.userAuthRepository.create(user)
 
-        const userProfile = new UserProfile(
+        const userProfile = new UserProfile({
           shortName,
           lastName,
           dni,
@@ -70,7 +73,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
           email,
           avatarUrl,
           phoneNumber,
-          userSaved.id
+          userId: userSaved.id}
         );
         await this.userRepository.create(userProfile);
 
@@ -80,7 +83,6 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
       }
 
     } catch (error) {
-      console.log(error)
       await session.abortTransaction();
       session.endSession();
       throw error;
