@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TransactionController } from 'src/api/transaction/transaction.controller';
 import { AuthFeatureModule } from '../auth/auth.module';
@@ -11,7 +11,6 @@ import { WalletFeatureModule } from '../wallet/wallet.module';
 import { CreateTransactionApplicationProvider } from './application/create-transaction/create-transaction.provider';
 import { GetAllTransactionsApplicationProvider } from './application/get-all-transaction/get-all-transactions.provider';
 import { GetTransactionByIdApplicationProvider } from './application/get-transaction-by-id/get-transaction-by-id.provider';
-import { ValidateWalletToTransactionMiddleware } from './infrastructure/middlewares/validate-wallet-to-transaction.middleware';
 import { TransactionModel, TransactionSchema } from './infrastructure/models/transaction.model';
 import { TransactionRepositoryProvider } from './infrastructure/repositories/transaction-repository.provider';
 
@@ -35,10 +34,4 @@ import { TransactionRepositoryProvider } from './infrastructure/repositories/tra
     GetTransactionByIdApplicationProvider,
   ],
 })
-export class TransactionFeatureModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(ValidateWalletToTransactionMiddleware)
-      .forRoutes({ path: 'transaction', method: RequestMethod.POST })
-  }
-}
+export class TransactionFeatureModule  {}

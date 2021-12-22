@@ -5,6 +5,7 @@ import { UserProfile } from '../../domain/entities/user.entity';
 import { IUserRepository } from './user-repository.interface';
 import { UserProfileModel } from '../models/user-profile.model';
 import { User } from 'src/features/auth/domain/entities/user.entity';
+import { UserModel } from 'src/features/auth/infrastructure/models/user.model';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -35,9 +36,18 @@ export class UserRepository implements IUserRepository {
     return userModel ? this.toDomainEntity(userModel) : null;
   }
 
+  // POPULATE
+  public async findOneByParams(param: number): Promise<UserProfile> {
+    const userModel = await this.userModel
+      .findOne( { $or: [ { dni: param }, { cuil: param } ] } )
+      .populate({path: 'userId'})
+      .exec();
+    return userModel ? this.toDomainEntityAndPopulate(userModel) : null;
+  }
+
   private toDomainEntity(model: UserProfileModel):UserProfile{
-    const { userId,shortName, lastName, dni, cuil, avatarUrl, email, phoneNumber } = model;
-    const userEntity = new UserProfile(
+    const { shortName, lastName, dni, cuil, avatarUrl, email, phoneNumber, userId, _id, createdAt, updatedAt } = model;
+    const userEntity = new UserProfile({
       shortName,
       lastName,
       dni,
@@ -45,8 +55,42 @@ export class UserRepository implements IUserRepository {
       avatarUrl,
       email,
       phoneNumber,
-      userId.toString()
-    );
+      userId: userId.toString(),
+      id: _id.toString(),
+      createdAt,
+      updatedAt
+    });
+    return userEntity;
+  }
+
+  private toDomainEntityAndPopulate(model: UserProfileModel):UserProfile{
+    const { shortName, lastName, dni, cuil, avatarUrl, email, phoneNumber, userId, _id, createdAt, updatedAt } = model;
+    const userEntity = new UserProfile({
+      shortName,
+      lastName,
+      dni,
+      cuil,
+      avatarUrl,
+      email,
+      phoneNumber,
+      userId: this.toEntityUser(userId as UserModel),
+      id: _id.toString(),
+      createdAt,
+      updatedAt
+    });
+    return userEntity;
+  }
+
+  private toEntityUser(model: UserModel): User {
+    const { customId, username, status, _id, clientId, walletId } = model;
+    const userEntity = new User({
+      customId,
+      username,
+      status,
+      clientId: clientId.toString(),
+      id: _id.toString(),
+      walletId: walletId.toString(),
+    });
     return userEntity;
   }
 }

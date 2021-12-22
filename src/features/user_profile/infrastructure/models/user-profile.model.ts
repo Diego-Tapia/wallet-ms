@@ -29,6 +29,12 @@ export class UserProfileModel extends Document {
 
   @Prop({ required: true })
   phoneNumber: number;
+
+  @Prop({})
+  createdAt: Date;
+  
+  @Prop({ })
+  updatedAt: Date;
 }
 
 export const UserProfileSchema = SchemaFactory.createForClass(UserProfileModel);
