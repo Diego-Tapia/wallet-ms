@@ -4,7 +4,7 @@ import { HealthService } from "src/healthcheck/service.health";
 @Controller('health')
 export class HealthController {
   constructor(private readonly serviceHealth: HealthService) { }
-
+  
   @Get()
   async getHealth(@Response() res) {
     try {

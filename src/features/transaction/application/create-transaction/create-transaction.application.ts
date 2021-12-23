@@ -1,4 +1,4 @@
-import { Injectable, Inject, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException, HttpStatus, HttpException, ConflictException } from '@nestjs/common';
 import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
 import { CreateTransactionDto } from '../../infrastructure/dtos/create-transaction.dto';
 import { ICreateTransactionApplication } from './create-transaction.app.interface';
@@ -14,6 +14,8 @@ import { IUserAuthRepository } from 'src/features/auth/infrastructure/repositori
 import { IApiResponse } from 'src/features/shared/interfaces/api-response.interface';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { ITransactionQueueMessage } from 'src/features/queue_emitter/domain/interfaces/transaction-queue-message.interface';
+import { User } from 'src/features/auth/domain/entities/user.entity';
+import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
 
 @Injectable()
 export class CreateTransactionApplication implements ICreateTransactionApplication {
@@ -29,21 +31,32 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
   ) {}
 
   public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel) {
-    const { amount, notes, token, dni } = createTransactionDto;
+    const { amount, notes, token, userIdentifier } = createTransactionDto;
     try {
-      const userProfile = await this.userProfileRepository.findOne(dni);
-      if (!userProfile) throw new BadRequestException(`There is no user with the DNI ${dni}`);
 
-      const user = await this.userAuthRepository.findById(userProfile.userId);
+      let userTemp: User;
+      let userProfile: UserProfile
+      const isNumber = !isNaN(Number(userIdentifier)); 
+      
+      if (isNumber) {
+        userProfile = await this.userProfileRepository.findOneByParams(+userIdentifier)
+      }
+
+      if (!userProfile && !isNumber ) {
+        userTemp = await this.userAuthRepository.findOneByParams(userIdentifier);
+      }
+      
+      const user =  userTemp || userProfile?.userId as User
+      if (!user) throw new HttpException('USER NOT-FOUND', HttpStatus.NOT_FOUND);
 
       const walletTo = await this.walletRepository.findById(user.walletId);
+      if (!walletTo) throw new HttpException('Wallet destino no encontrada', HttpStatus.NOT_FOUND);
       
       const walletFrom = await this.walletRepository.findById(req.user.walletId);
-      if (!walletFrom) throw new BadRequestException('no wallet');
+      if (!walletFrom) throw new BadRequestException('Wallet origen no encontrada');
 
-      // VALIDAR QUE WALLETFROM CUENTE CON EL SALDO SUFICIENTE PARA TRANSFERIR
-      // const balancewalletFromByTokenId = 1500
-      // if (balancewalletFromByTokenId < amount) throw new BadRequestException('Insufficient Balance')
+      if (!walletFrom.hasEnoughFunds(token, amount))
+      throw new ConflictException("Wallet origen sin fondos suficientes.");
 
       const transaction = new Transaction({
         amount,
@@ -80,6 +93,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
         success: false,
         data: error.response || error,
       };
+
       return response
     }
   }
