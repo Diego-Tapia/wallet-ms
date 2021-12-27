@@ -16,22 +16,19 @@ export class GetBalancesApplication implements IGetBalancesApplication {
   ) { }
 
   public async execute(walletId: string): Promise<IApiResponse<IGetBalances>> {
-    const wallet: Wallet = await this.walletRepository.findById(walletId)
-    let balanceResponse
-    if (!wallet) throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND)
-    else {
-      let total: number = 0;
-      wallet.balances.forEach(singleBalance => total += +singleBalance.amount)
-      balanceResponse = { total, balances: wallet.balances }
-    }
+    const wallet: Wallet = await this.walletRepository.findById(walletId, [{ path: "balances.tokenId" }])
+    if (!wallet) throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND);
 
-    let response: IApiResponse<IGetBalances> = {
+    const total = wallet.getTotal();
+    const balanceResponse = { total, balances: wallet.balances };
+
+    const response: IApiResponse<IGetBalances> = {
       status: 200,
       message: 'success',
       success: true,
       data: balanceResponse,
     };
 
-    return response
+    return response;
   }
 }
