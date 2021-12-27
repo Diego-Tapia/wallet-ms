@@ -1,13 +1,14 @@
-import { BadRequestException, Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpCode, HttpException, HttpStatus, Inject, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IUserAuthLoginApplication } from 'src/features/auth/application/login-user/user-login-app.interface';
 import { IUserAuthRegisterApplication } from 'src/features/auth/application/register-user/user-registrer.app.interface';
 import { IUserAuthConfirmApplication } from 'src/features/auth/application/user-confirm/user-confirm-app.interface';
 import { UserAuthTypes } from 'src/features/auth/auth.types';
+import { AuthResponse } from 'src/features/auth/domain/response/auth.response';
 import { UserConfirmDTO } from 'src/features/auth/infrastructure/dto/user-confirm.dto';
 import { UserLoginDTO } from 'src/features/auth/infrastructure/dto/user-login.dto';
 import { UserRegisterDTO } from 'src/features/auth/infrastructure/dto/user-register.dto';
-import { AuthResponse } from 'src/features/auth/infrastructure/models/authResponse.model';
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -40,12 +41,16 @@ export class AuthController {
   }
 
   @Post('login')
-  @ApiResponse({status:201, description: 'Retorna el token que se utiliza para accceder las rutas', type: AuthResponse})
+  @ApiResponse({
+    status:201, 
+    description: 'Retorna el token que se utiliza para accceder las rutas', 
+    type: AuthResponse
+  })
   async login(@Body() userLoginDTO: UserLoginDTO) {
     try {
       return await this.userAuthLoginApplication.execute(userLoginDTO);
     } catch (e) {
-      throw new BadRequestException(e.message);
+      throw new HttpException(e.message, e.status || HttpStatus.BAD_REQUEST)
     }
   }
 }

@@ -8,7 +8,7 @@ import { TokenFeatureModule } from './features/token/token.module';
 import { TransactionFeatureModule } from './features/transaction/transaction.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthMiddleware } from './features/auth/infrastructure/service/middleware/auth.middleware';
-import { UserFeatureModule } from './features/user_profile/user.module';
+import { UserProfileFeatureModule } from './features/user_profile/user.module';
 import { WalletFeatureModule } from './features/wallet/wallet.module';
 import { HealthController } from './api/healthcheck/healthcheck.controller';
 import { HealthService } from './healthcheck/service.health';
@@ -30,7 +30,7 @@ import { HealthService } from './healthcheck/service.health';
     DatabaseModule,
     AuthFeatureModule,
     TransactionFeatureModule,
-    UserFeatureModule,
+    UserProfileFeatureModule,
     WalletFeatureModule,
   ],
   controllers: [HealthController],

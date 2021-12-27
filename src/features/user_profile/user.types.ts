@@ -1,4 +1,4 @@
-export const UserTypes = {
+export const UserProfileTypes = {
   APPLICATION: {
     CREATE_USER: Symbol('CreateUserApplication'),
     GET_ALL_USERS: Symbol('GetAllUsersApplication'),

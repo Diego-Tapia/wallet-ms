@@ -6,8 +6,8 @@ import { QueueEmitterTypes } from 'src/features/queue_emitter/queue-emitter.type
 import { IQueueEmitterTransactionApplication } from 'src/features/queue_emitter/application/transaction/queue-emitter-transaction-app.interface';
 import { WalletTypes } from 'src/features/wallet/wallet.type';
 import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
-import { UserTypes } from 'src/features/user_profile/user.types';
-import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserProfileTypes } from 'src/features/user_profile/user.types';
+import { IUserProfileRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
 import { ETransactionTypes } from 'src/features/transaction_type/domain/enums/transaction-types.enum';
 import { UserAuthTypes } from 'src/features/auth/auth.types';
 import { IUserAuthRepository } from 'src/features/auth/infrastructure/repositories/auth-user-repository.interface';
@@ -24,8 +24,8 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
     private readonly queueEmitterTransactionApplication: IQueueEmitterTransactionApplication,
     @Inject(WalletTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly walletRepository: IWalletRepository,
-    @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly userProfileRepository: IUserRepository,
+    @Inject(UserProfileTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly userProfileRepository: IUserProfileRepository,
     @Inject(UserAuthTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userAuthRepository: IUserAuthRepository,
   ) {}

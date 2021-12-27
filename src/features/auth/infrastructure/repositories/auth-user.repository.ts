@@ -148,7 +148,7 @@ export class UserAuthRepository implements IUserAuthRepository {
 
 
 
-  async generateJwt(user: UserI): Promise<string> {
+  async generateJwt(user: User): Promise<string> {
     return this.jwtService.signAsync({ user });
   }
 

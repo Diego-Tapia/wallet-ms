@@ -10,7 +10,7 @@ import { UserLoginProvider } from './application/login-user/user-login.provider'
 import { UserRegistrerProvider } from './application/register-user/user-registrer.provider';
 import { UserConfirmProvider } from './application/user-confirm/user-confirm.provider';
 import { JwtModule } from '@nestjs/jwt';
-import { UserRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
+import { UserProfileRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
 import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
 import { UserModel, UserSchema } from './infrastructure/models/user.model';
 import { WalletFeatureModule } from '../wallet/wallet.module';
@@ -41,12 +41,12 @@ import { WalletFeatureModule } from '../wallet/wallet.module';
   providers: [
     JwtStrategy,
     UserAuthRepositoryProvider,
-    UserRepositoryProvider,
+    UserProfileRepositoryProvider,
     UserLoginProvider,
     UserRegistrerProvider,
     UserConfirmProvider,
   ],
   controllers: [AuthController],
-  exports: [UserAuthRepositoryProvider,UserRepositoryProvider],
+  exports: [UserAuthRepositoryProvider,UserProfileRepositoryProvider],
 })
 export class AuthFeatureModule {}

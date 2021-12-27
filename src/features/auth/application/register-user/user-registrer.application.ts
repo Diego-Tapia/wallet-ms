@@ -4,8 +4,8 @@ import { IUserAuthRegisterApplication } from './user-registrer.app.interface';
 import { IUserAuthRepository } from '../../infrastructure/repositories/auth-user-repository.interface';
 import { UserRegisterDTO } from '../../infrastructure/dto/user-register.dto';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
-import { UserTypes } from 'src/features/user_profile/user.types';
-import { IUserRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserProfileTypes } from 'src/features/user_profile/user.types';
+import { IUserProfileRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
 import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
 import { User } from '../../domain/entities/user.entity';
 import { InjectConnection } from '@nestjs/mongoose';
@@ -20,8 +20,8 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
   constructor(
     @Inject(UserAuthTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userAuthRepository: IUserAuthRepository,
-    @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly userRepository: IUserRepository,
+    @Inject(UserProfileTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly userProfileRepository: IUserProfileRepository,
     @InjectConnection()
     private readonly connection: Connection,
     @Inject(WalletTypes.INFRASTRUCTURE.REPOSITORY)
@@ -37,7 +37,7 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
       const { clientId, email, password, dni, shortName, lastName, cuil, phoneNumber, avatarUrl, username, customId } =
         userRegisterDto;
 
-      const userExists = await this.userRepository.findOne(dni);
+      const userExists = await this.userProfileRepository.findOne(dni);
 
       if (userExists) {
         throw new ConflictException('DNI is already registered');
@@ -75,7 +75,8 @@ export class UserRegisterApplication implements IUserAuthRegisterApplication {
           phoneNumber,
           userId: userSaved.id}
         );
-        await this.userRepository.create(userProfile);
+        
+        await this.userProfileRepository.create(userProfile);
 
         await session.commitTransaction();
         session.endSession();

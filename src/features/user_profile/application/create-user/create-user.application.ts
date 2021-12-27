@@ -2,15 +2,15 @@ import { Injectable, Inject } from '@nestjs/common';
 import { RequestModel } from 'src/features/auth/infrastructure/service/middleware/auth.middleware';
 import { UserProfile } from '../../domain/entities/user.entity';
 import { CreateUserProfileDto } from '../../infrastructure/dtos/create-user.dto';
-import { IUserRepository } from '../../infrastructure/repositories/user-repository.interface';
-import { UserTypes } from '../../user.types';
+import { IUserProfileRepository } from '../../infrastructure/repositories/user-repository.interface';
+import { UserProfileTypes } from '../../user.types';
 import { ICreateUserApplication } from './create-user.app.interface';
 
 @Injectable()
 export class CreateUserApplication implements ICreateUserApplication {
   constructor(
-    @Inject(UserTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly userRepository: IUserRepository,
+    @Inject(UserProfileTypes.INFRASTRUCTURE.REPOSITORY)
+    private readonly userProfileRepository: IUserProfileRepository,
   ) { }
 
   public execute(createUserDto: CreateUserProfileDto, req: RequestModel): Promise<UserProfile> {
@@ -18,6 +18,6 @@ export class CreateUserApplication implements ICreateUserApplication {
 
     const user = new UserProfile({shortName, lastName, dni, cuil, avatarUrl, email, phoneNumber,userId});
 
-    return this.userRepository.create(user);
+    return this.userProfileRepository.create(user);
   }
 }

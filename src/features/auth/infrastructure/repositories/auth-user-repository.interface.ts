@@ -10,8 +10,8 @@ export interface IUserAuthRepository {
   confirm(userConfirm: Confirm): any;
   login(userLogin: Login): any;
   verifyJwt(jwt: string):Promise<any>;
-  generateJwt(user: UserI): Promise<any>;
-  create(user:User):Promise<any>;
+  generateJwt(user: User): Promise<string>;
+  create(user:User):Promise<User>;
   findById(id: string): Promise<User>
   findOne(user:any): Promise<User>;
   findOneByParams(param: string): Promise<User>

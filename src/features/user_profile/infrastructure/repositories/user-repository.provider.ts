@@ -1,7 +1,7 @@
-import { UserTypes } from '../../user.types';
-import { UserRepository } from './user.repository';
+import { UserProfileTypes } from '../../user.types';
+import { UserProfileRepository } from './user.repository';
 
-export const UserRepositoryProvider = {
-  provide: UserTypes.INFRASTRUCTURE.REPOSITORY,
-  useClass: UserRepository,
+export const UserProfileRepositoryProvider = {
+  provide: UserProfileTypes.INFRASTRUCTURE.REPOSITORY,
+  useClass: UserProfileRepository,
 };

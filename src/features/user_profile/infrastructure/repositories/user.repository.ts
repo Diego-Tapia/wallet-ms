@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { UserProfile } from '../../domain/entities/user.entity';
-import { IUserRepository } from './user-repository.interface';
 import { UserProfileModel } from '../models/user-profile.model';
 import { User } from 'src/features/auth/domain/entities/user.entity';
 import { UserModel } from 'src/features/auth/infrastructure/models/user.model';
+import { IUserProfileRepository } from './user-repository.interface';
 
 @Injectable()
-export class UserRepository implements IUserRepository {
+export class UserProfileRepository implements IUserProfileRepository {
   constructor(@InjectModel(UserProfileModel.name) private readonly userModel: Model<UserProfileModel>) { }
 
   public async create(user: UserProfile): Promise<UserProfile> {
@@ -40,6 +40,13 @@ export class UserRepository implements IUserRepository {
   public async findOneByParams(param: number): Promise<UserProfile> {
     const userModel = await this.userModel
       .findOne( { $or: [ { dni: param }, { cuil: param } ] } )
+      .populate({path: 'userId'})
+      .exec();
+    return userModel ? this.toDomainEntityAndPopulate(userModel) : null;
+  }
+
+  public async findOneQueryAndPopulate(filter: FilterQuery<UserProfileModel>): Promise<UserProfile> {
+    const userModel = await this.userModel.findOne({ ...filter })
       .populate({path: 'userId'})
       .exec();
     return userModel ? this.toDomainEntityAndPopulate(userModel) : null;

@@ -6,7 +6,7 @@ import { QueueEmitterFeatureModule } from '../queue_emitter/queue-emitter.module
 import { BlockchainModule } from '../shared/blockchain/blockchain.module';
 import { LibrarieModule } from '../shared/libaries/librarie.module';
 import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
-import { UserRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
+import { UserProfileRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
 import { WalletFeatureModule } from '../wallet/wallet.module';
 import { CreateTransactionApplicationProvider } from './application/create-transaction/create-transaction.provider';
 import { GetAllTransactionsApplicationProvider } from './application/get-all-transaction/get-all-transactions.provider';
@@ -27,7 +27,7 @@ import { TransactionRepositoryProvider } from './infrastructure/repositories/tra
       { name: UserProfileModel.name, schema: UserProfileSchema }]),
   ],
   providers: [
-    UserRepositoryProvider,
+    UserProfileRepositoryProvider,
     TransactionRepositoryProvider,
     CreateTransactionApplicationProvider,
     GetAllTransactionsApplicationProvider,
