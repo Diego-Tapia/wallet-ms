@@ -55,6 +55,8 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
       const walletFrom = await this.walletRepository.findById(req.user.walletId);
       if (!walletFrom) throw new BadRequestException('Wallet origen no encontrada');
 
+      if( walletFrom.id === walletTo.id ) throw new BadRequestException('Wallet origen y wallet destino no pueden ser iguales');
+
       if (!walletFrom.hasEnoughFunds(token, amount))
       throw new ConflictException("Wallet origen sin fondos suficientes.");
 
