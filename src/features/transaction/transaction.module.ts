@@ -5,6 +5,7 @@ import { AuthFeatureModule } from '../auth/auth.module';
 import { QueueEmitterFeatureModule } from '../queue_emitter/queue-emitter.module';
 import { BlockchainModule } from '../shared/blockchain/blockchain.module';
 import { LibrarieModule } from '../shared/libaries/librarie.module';
+import { TransactionTypeFeatureModule } from '../transaction_type/transaction-type.module';
 import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
 import { UserProfileRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
 import { WalletFeatureModule } from '../wallet/wallet.module';
@@ -22,6 +23,7 @@ import { TransactionRepositoryProvider } from './infrastructure/repositories/tra
     BlockchainModule,
     QueueEmitterFeatureModule,
     WalletFeatureModule,
+    TransactionTypeFeatureModule,
     MongooseModule.forFeature([
       { name: TransactionModel.name, schema: TransactionSchema },
       { name: UserProfileModel.name, schema: UserProfileSchema }]),

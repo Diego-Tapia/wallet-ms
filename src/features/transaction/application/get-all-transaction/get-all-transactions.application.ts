@@ -14,6 +14,12 @@ export class GetAllTransactionsApplication implements IGetAllTransactionsApplica
 
   public execute(req: RequestModel): Promise<Transaction[]> {
     const { walletId } = req.user;
-    return this.transactionRepository.findAll( { $or: [ { walletFromId: walletId }, { walletToId: walletId } ] } )
+    return this.transactionRepository.findAll( 
+      { $or: [ { walletFromId: walletId }, { walletToId: walletId } ] }, 
+      [
+        {path: 'tokenId'}, 
+        {path: 'transactionTypeId'}
+      ]
+    )
   }
 }

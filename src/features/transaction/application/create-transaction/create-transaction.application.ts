@@ -73,7 +73,7 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
       const transactionQueueMessage: ITransactionQueueMessage = {
         ...transaction,
         userId: transaction.user,
-        tokenId: transaction.token,
+        tokenId: transaction.token as string,
       }
 
       this.queueEmitterTransactionApplication.execute(transactionQueueMessage);

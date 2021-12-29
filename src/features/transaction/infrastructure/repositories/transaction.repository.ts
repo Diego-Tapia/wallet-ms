@@ -11,31 +11,23 @@ export class TransactionRepository implements ITransactionRepository {
     @InjectModel(TransactionModel.name) private readonly transactionModel: Model<TransactionModel>,
   ) {}
 
-  public async findAll(filter?: FilterQuery<TransactionModel>): Promise<Transaction[]> {
-    const transactionModels = await this.transactionModel.find(filter)
-      .sort({ createdAt: -1 })
-      .exec();
-    return transactionModels.map((transaction) => this.toDomainEntity(transaction));
+  public async findAll(filter?: FilterQuery<TransactionModel>, paths?: Array<{ path: string }> | null): Promise<Transaction[]> {
+    const query = this.transactionModel.find(filter);
+
+    if(paths) query.populate(paths);
+    const model = await query.sort({ createdAt: -1 }).exec();
+
+    if(paths) return model.map((transaction) => Transaction.toEntityAndPopulate(transaction));
+    return model.map((transaction) => Transaction.toEntity(transaction));
   }
 
-  public async findById(id: string): Promise<Transaction> {
-    const transactionModel = await this.transactionModel.findById(id).exec();
-    return this.toDomainEntity(transactionModel);
-  }
+  public async findById(id: string, paths?: Array<{ path: string }> | null): Promise<Transaction> {
+    const query = this.transactionModel.findById(id);
 
-  private toDomainEntity(model: TransactionModel): Transaction {
-    const { hash, walletFromId, walletToId, amount, userId, notes, tokenId, transactionTypeId, _id } = model;
-    const transactionEntity = new Transaction({
-      hash,
-      amount,
-      notes,
-      token: tokenId.toString(),
-      transactionType: transactionTypeId.toString(),
-      user: userId.toString(),
-      walletFrom: walletFromId.toString(),
-      walletTo: walletToId.toString(),
-      id: _id.toString()
-    });
-    return transactionEntity;
+    if(paths) query.populate(paths);
+    const model = await query.exec();
+    
+    if(paths) return Transaction.toEntityAndPopulate(model)
+    return Transaction.toEntity(model);
   }
 }

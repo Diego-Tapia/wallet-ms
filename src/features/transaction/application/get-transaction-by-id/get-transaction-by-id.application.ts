@@ -12,6 +12,10 @@ export class GetTransactionByIdApplication implements IGetTransactionByIdApplica
   ) {}
 
   public execute(id: string): Promise<Transaction> {
-    return this.transactionRepository.findById(id)
-  }
+    return this.transactionRepository.findById(id,  
+      [
+        {path: 'transactionTypeId'},
+        {path: 'tokenId'}, 
+      ])
+    }
 }

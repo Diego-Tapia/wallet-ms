@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { UserModel } from 'src/features/auth/infrastructure/models/user.model';
 import { TokenModel } from 'src/features/token/infrastructure/models/token.model';
+import { TransactionTypeModel } from 'src/features/transaction_type/infrastructure/models/token-type.model';
 import { WalletModel } from 'src/features/wallet/infrastructure/models/wallet.model';
 
 @Schema({
@@ -12,7 +13,7 @@ export class TransactionModel extends Document {
   @Prop({ required: true })
   hash: string;
 
-  @Prop({ type: Types.ObjectId, ref: TransactionModel.name})
+  @Prop({ type: Types.ObjectId, ref: TransactionTypeModel.name})
   transactionTypeId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: TokenModel.name})
@@ -32,6 +33,12 @@ export class TransactionModel extends Document {
 
   @Prop({ })
   notes: string;
+
+  @Prop({})
+  createdAt: Date;
+  
+  @Prop({ })
+  updatedAt: Date;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(TransactionModel);
