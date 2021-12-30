@@ -8,7 +8,7 @@ import { ClientModel } from 'src/features/client/infrastructure/models/client.mo
 export class ClientConfigModel extends Document {
 
   @Prop({ type: Types.ObjectId, ref: ClientModel.name })
-  client_id: ClientModel | Types.ObjectId;
+  clientId: Types.ObjectId;
 
   @Prop({ required: true })
   logo: string;
@@ -17,16 +17,16 @@ export class ClientConfigModel extends Document {
   banner: string;
 
   @Prop({ required: true})
-  main_color: string;
+  mainColor: string;
 
   @Prop({ required: true })
-  secondary_color : string;
+  secondaryColor : string;
 
   @Prop({ required: true })
   domain: number;
 
   @Prop({ required: true })
-  verify_user: string;
+  verifyUser: string;
 
 }
 

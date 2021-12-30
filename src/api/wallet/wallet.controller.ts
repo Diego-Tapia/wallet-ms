@@ -30,6 +30,6 @@ export class WalletController {
   })
   @UseGuards(JwtAuthGuard)
   findBalances(@Request() req: RequestModel) {
-    return this.getBalancesApplication.execute(req.user.walletId)
+    return this.getBalancesApplication.execute(req)
   }
 }

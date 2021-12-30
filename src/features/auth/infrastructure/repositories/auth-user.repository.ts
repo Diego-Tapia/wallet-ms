@@ -11,14 +11,12 @@ import {
 } from 'amazon-cognito-identity-js';
 import { Model } from 'mongoose';
 import configs from 'src/configs/environments/configs';
-import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
-import { UserProfileModel } from 'src/features/user_profile/infrastructure/models/user-profile.model';
+import { UserProfile } from 'src/features/user/domain/entities/user-profile.entity';
+import { User } from 'src/features/user/domain/entities/user.entity';
+import { UserModel } from 'src/features/user/infrastructure/models/user.model';
 import { Confirm } from '../../domain/entities/authConfirmUser.entity';
 import { Login } from '../../domain/entities/authLoginUser.entity';
 import { Register } from '../../domain/entities/authRegisterUser.entity';
-import { User } from '../../domain/entities/user.entity';
-import { UserI } from '../interfaces/user.interface';
-import { UserModel } from '../models/user.model';
 import { IUserAuthRepository } from './auth-user-repository.interface';
 
 @Injectable()
@@ -110,43 +108,6 @@ export class UserAuthRepository implements IUserAuthRepository {
       });
     });
   }
-
-  public async findOne(username: string): Promise<User> {
-    const userModel = await this.userModel.findOne({ username: username }).exec();
-    return userModel ? this.toDomainEntity(userModel) : null;
-  }
-
-    public async findById(id: string): Promise<User> {
-    const userModel = await this.userModel.findById(id).exec();
-    return userModel ? this.toDomainEntity(userModel) : null
-  }
-
-  public async create(user: User): Promise<User> {
-    const savedUser = await new this.userModel(user).save();
-    return this.toDomainEntity(savedUser);
-  }
-
-  public async findOneByParams(param: string): Promise<User> {
-    const userModel = await this.userModel
-      .findOne( { $or: [ { customId: param }, { username: param } ] } )
-      .exec();
-    return userModel ? this.toDomainEntity(userModel) : null;
-  }
-
-  private toDomainEntity(model: UserModel): User {
-    const { customId, username, status, clientId,_id, walletId } = model;
-    const userEntity = new User({
-      customId,
-      username,
-      status,
-      clientId: clientId.toString(),
-      id: _id.toString(),
-      walletId: walletId.toString()
-    });
-    return userEntity;
-  }
-
-
 
   async generateJwt(user: User): Promise<string> {
     return this.jwtService.signAsync({ user });

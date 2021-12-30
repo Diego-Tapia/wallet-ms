@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
+import { UserProfile } from 'src/features/user/domain/entities/user-profile.entity';
 
 export class AuthResponse {
   @ApiProperty()
   token: string;
 
   @ApiProperty()
-  userProfile: UserProfile
+  user: UserProfile
 }

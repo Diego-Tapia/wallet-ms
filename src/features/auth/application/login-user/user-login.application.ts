@@ -7,10 +7,11 @@ import { UserLoginDTO } from '../../infrastructure/dto/user-login.dto';
 import { IUserAuthRepository } from '../../infrastructure/repositories/auth-user-repository.interface';
 import { IUserAuthLoginApplication } from './user-login-app.interface';
 import { Login } from '../../domain/entities/authLoginUser.entity';
-import { IUserProfileRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
-import { UserProfileTypes } from 'src/features/user_profile/user.types';
+import { IUserProfileRepository } from 'src/features/user/infrastructure/repositories/user-profile/user-profile-repository.interface';
 import { AuthResponse } from '../../domain/response/auth.response';
-import { User } from '../../domain/entities/user.entity';
+import { UserTypes } from 'src/features/user/user.types';
+import { IUserRepository } from 'src/features/user/infrastructure/repositories/user/user-repository.interface';
+import { User } from 'src/features/user/domain/entities/user.entity';
 @Injectable()
 export class UserLoginApplication implements IUserAuthLoginApplication {
   private userPool: CognitoUserPool;
@@ -20,8 +21,10 @@ export class UserLoginApplication implements IUserAuthLoginApplication {
     private config: ConfigType<typeof configs>,
     @Inject(UserAuthTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly userAuthRepository: IUserAuthRepository,
-    @Inject(UserProfileTypes.INFRASTRUCTURE.REPOSITORY)
+    @Inject(UserTypes.INFRASTRUCTURE.USER_PROFILE_REPOSITORY)
     private readonly userProfileRepository: IUserProfileRepository,
+    @Inject(UserTypes.INFRASTRUCTURE.USER_REPOSITORY)
+    private readonly userRepository: IUserRepository,
     
   ) {
     this.userPool = new CognitoUserPool({
@@ -33,17 +36,17 @@ export class UserLoginApplication implements IUserAuthLoginApplication {
   public async execute(userLoginDTO: UserLoginDTO):Promise<AuthResponse>{
     const { username, password } = userLoginDTO;
 
-    const payload: User = await this.userAuthRepository.findOne(username)
+    const payload: User = await this.userRepository.findOne({ username })
     if (!payload) throw new UnauthorizedException('Usuario o contraseña incorrecta')
     
     const login = new Login(username, password);
     await this.userAuthRepository.login(login);
     
     const token = await this.userAuthRepository.generateJwt(payload);
-    const userProfile = await this.userProfileRepository.findOneQueryAndPopulate({ userId: payload.id })
+    const userProfile = await this.userProfileRepository.findOne({ userId: payload.id }, {path: 'userId'})
     return {
       token,
-      userProfile
+      user: userProfile
     }
   }
 }

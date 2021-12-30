@@ -1,21 +1,11 @@
 export class Applicabilities {
+  name: string;
+  description: string;
+  clientId: string;
 
-    name: string;
-    description: string;
-    clientId: string;
-
-    constructor(
-        name: string,
-        description: string,
-        clientId: string,
-
-    ) {
-        this.name = name
-        this.description = description;
-        this.clientId = clientId;
-
-    }
-
-
-
+  constructor(name: string, description: string, clientId: string) {
+    this.name = name;
+    this.description = description;
+    this.clientId = clientId;
+  }
 }

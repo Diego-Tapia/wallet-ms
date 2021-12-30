@@ -6,16 +6,13 @@ import { QueueEmitterTypes } from 'src/features/queue_emitter/queue-emitter.type
 import { IQueueEmitterTransactionApplication } from 'src/features/queue_emitter/application/transaction/queue-emitter-transaction-app.interface';
 import { WalletTypes } from 'src/features/wallet/wallet.type';
 import { IWalletRepository } from 'src/features/wallet/infrastructure/repositories/wallet-repository.interface';
-import { UserProfileTypes } from 'src/features/user_profile/user.types';
-import { IUserProfileRepository } from 'src/features/user_profile/infrastructure/repositories/user-repository.interface';
+import { UserTypes } from 'src/features/user/user.types';
 import { ETransactionTypes } from 'src/features/transaction_type/domain/enums/transaction-types.enum';
-import { UserAuthTypes } from 'src/features/auth/auth.types';
-import { IUserAuthRepository } from 'src/features/auth/infrastructure/repositories/auth-user-repository.interface';
 import { IApiResponse } from 'src/features/shared/interfaces/api-response.interface';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { ITransactionQueueMessage } from 'src/features/queue_emitter/domain/interfaces/transaction-queue-message.interface';
-import { User } from 'src/features/auth/domain/entities/user.entity';
-import { UserProfile } from 'src/features/user_profile/domain/entities/user.entity';
+import { User } from 'src/features/user/domain/entities/user.entity';
+import { IValidateUserApplication } from 'src/features/user/application/validate-user/validate-user-app.interface';
 
 @Injectable()
 export class CreateTransactionApplication implements ICreateTransactionApplication {
@@ -24,35 +21,23 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
     private readonly queueEmitterTransactionApplication: IQueueEmitterTransactionApplication,
     @Inject(WalletTypes.INFRASTRUCTURE.REPOSITORY)
     private readonly walletRepository: IWalletRepository,
-    @Inject(UserProfileTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly userProfileRepository: IUserProfileRepository,
-    @Inject(UserAuthTypes.INFRASTRUCTURE.REPOSITORY)
-    private readonly userAuthRepository: IUserAuthRepository,
+    @Inject(UserTypes.APPLICATION.VALIDATE_USER)
+    private readonly validateUserApplication: IValidateUserApplication
   ) {}
 
   public async execute(createTransactionDto: CreateTransactionDto, req: RequestModel) {
     const { amount, notes, token, userIdentifier } = createTransactionDto;
     try {
 
-      let userTemp: User;
-      let userProfile: UserProfile
-      const isNumber = !isNaN(Number(userIdentifier)); 
-      
-      if (isNumber) {
-        userProfile = await this.userProfileRepository.findOneByParams(+userIdentifier)
-      }
+      const userProfile = await this.validateUserApplication.execute(userIdentifier, req)
+      if (!userProfile) throw new HttpException('USER NOT-FOUND', HttpStatus.NOT_FOUND);
 
-      if (!userProfile && !isNumber ) {
-        userTemp = await this.userAuthRepository.findOneByParams(userIdentifier);
-      }
-      
-      const user =  userTemp || userProfile?.userId as User
-      if (!user) throw new HttpException('USER NOT-FOUND', HttpStatus.NOT_FOUND);
+      const user = userProfile.userId as User;
 
-      const walletTo = await this.walletRepository.findById(user.walletId);
+      const walletTo = await this.walletRepository.findById(user.walletId as string);
       if (!walletTo) throw new HttpException('Wallet destino no encontrada', HttpStatus.NOT_FOUND);
       
-      const walletFrom = await this.walletRepository.findById(req.user.walletId);
+      const walletFrom = await this.walletRepository.findById(req.user.walletId as string);
       if (!walletFrom) throw new BadRequestException('Wallet origen no encontrada');
 
       if( walletFrom.id === walletTo.id ) throw new BadRequestException('Wallet origen y wallet destino no pueden ser iguales');
@@ -71,9 +56,13 @@ export class CreateTransactionApplication implements ICreateTransactionApplicati
       });
 
       const transactionQueueMessage: ITransactionQueueMessage = {
-        ...transaction,
-        userId: transaction.user,
-        tokenId: transaction.token as string,
+        amount,
+        transactionType: ETransactionTypes.TRANSFER,
+        walletFrom: walletFrom.id,
+        walletTo: walletTo.id,
+        notes,
+        userId: req.user.id,
+        tokenId: token,
       }
 
       this.queueEmitterTransactionApplication.execute(transactionQueueMessage);

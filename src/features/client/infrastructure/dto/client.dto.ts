@@ -18,7 +18,7 @@ export class ClientDto {
 
   @IsString()
   @IsNotEmpty()
-  business_name: string;
+  businessName: string;
 
   @IsString()
   @IsNotEmpty()

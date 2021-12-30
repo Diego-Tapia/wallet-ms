@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { ApplicabilityModel } from 'src/features/appicability/infrastructure/models/applicability.model';
+import { ClientModel } from 'src/features/client/infrastructure/models/client.model';
 import { TransactionTypeModel } from 'src/features/transaction_type/infrastructure/models/token-type.model';
+import { ETokenStatus } from '../../domain/enums/token-status.enum';
 
 
 @Schema({
@@ -12,9 +14,6 @@ export class TokenModel extends Document {
   @Prop({ required: true, maxlength: 30 })
   shortName: string;
 
-  @Prop()
-  description?: string;
-
   @Prop({ required: true, maxlength: 5 })
   symbol: string;
 
@@ -24,11 +23,20 @@ export class TokenModel extends Document {
   @Prop({ required: true, maxlength: 5 })
   money: string;
 
-  @Prop({ required: true, enum: ['ACTIVE', 'BLOCKED', 'PENDING_APPROVE', 'INACTIVE'] })
+  @Prop({ required: true, enum: ETokenStatus })
   status: string;
 
   @Prop({ required: true, min: 0 })
-  itemId: number;
+  bcItemId: number;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: ApplicabilityModel.name }] })
+  applicabilities: Types.ObjectId[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: TransactionTypeModel.name }] })
+  operations: Types.ObjectId[];
+
+  @Prop()
+  description?: string;
 
   @Prop()
   validFrom?: Date;
@@ -36,14 +44,26 @@ export class TokenModel extends Document {
   @Prop()
   validTo?: Date;
 
+  @Prop({ type: Types.ObjectId, ref: ClientModel.name })
+  clientId: Types.ObjectId;
+
+  @Prop({ required: true, default: false })
+  emited: boolean;
+
+  @Prop({ required: true })
+  transferable: boolean;
+
+  @Prop({ required: true })
+  initialAmount: number;
+
   @Prop()
-  bc_item_id?: string;
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: TransactionTypeModel.name }] })
-  operations: TransactionTypeModel[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: ApplicabilityModel.name }] })
-  applicabilities: ApplicabilityModel[];
+  observation: string;
+  
+  @Prop({})
+  createdAt: Date;
+  
+  @Prop({ })
+  updatedAt: Date;
 
 }
 

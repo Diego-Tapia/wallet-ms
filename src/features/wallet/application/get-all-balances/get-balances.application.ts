@@ -5,6 +5,7 @@ import { IGetBalances } from "../../domain/interfaces/getbalances.interface";
 import { IApiResponse } from "src/features/shared/interfaces/api-response.interface";
 import { IWalletRepository } from "../../infrastructure/repositories/wallet-repository.interface";
 import { WalletTypes } from "../../wallet.type";
+import { RequestModel } from "src/features/auth/infrastructure/service/middleware/auth.middleware";
 
 
 @Injectable()
@@ -15,8 +16,9 @@ export class GetBalancesApplication implements IGetBalancesApplication {
     private readonly walletRepository: IWalletRepository
   ) { }
 
-  public async execute(walletId: string): Promise<IApiResponse<IGetBalances>> {
-    const wallet: Wallet = await this.walletRepository.findById(walletId, [{ path: "balances.tokenId" }])
+  public async execute(req: RequestModel): Promise<IApiResponse<IGetBalances>> {
+    const walletId = req.user.walletId
+    const wallet: Wallet = await this.walletRepository.findById(walletId as string, [{ path: "balances.tokenId" }])
     if (!wallet) throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND);
 
     const total = wallet.getTotal();

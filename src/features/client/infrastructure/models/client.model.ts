@@ -13,7 +13,7 @@ export class ClientModel extends Document {
   cuit: number;
 
   @Prop({ required: true })
-  business_name: string;
+  businessName: string;
 
   @Prop({ required: true })
   responsible: string;

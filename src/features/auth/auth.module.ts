@@ -10,13 +10,14 @@ import { UserLoginProvider } from './application/login-user/user-login.provider'
 import { UserRegistrerProvider } from './application/register-user/user-registrer.provider';
 import { UserConfirmProvider } from './application/user-confirm/user-confirm.provider';
 import { JwtModule } from '@nestjs/jwt';
-import { UserProfileRepositoryProvider } from '../user_profile/infrastructure/repositories/user-repository.provider';
-import { UserProfileModel, UserProfileSchema } from '../user_profile/infrastructure/models/user-profile.model';
-import { UserModel, UserSchema } from './infrastructure/models/user.model';
+import { UserProfileModel, UserProfileSchema } from '../user/infrastructure/models/user-profile.model';
 import { WalletFeatureModule } from '../wallet/wallet.module';
+import { UserModel, UserSchema } from '../user/infrastructure/models/user.model';
+import { UserFeatureModule } from '../user/user.module';
 
 
 @Module({
+  controllers: [AuthController],
   imports: [
     ConfigModule.forRoot({
       load: [configs],
@@ -35,18 +36,19 @@ import { WalletFeatureModule } from '../wallet/wallet.module';
          }
       }
     }),
-    WalletFeatureModule
+    WalletFeatureModule,
+    UserFeatureModule
     
   ],
   providers: [
     JwtStrategy,
     UserAuthRepositoryProvider,
-    UserProfileRepositoryProvider,
     UserLoginProvider,
     UserRegistrerProvider,
     UserConfirmProvider,
   ],
-  controllers: [AuthController],
-  exports: [UserAuthRepositoryProvider,UserProfileRepositoryProvider],
+  exports: [
+    UserAuthRepositoryProvider
+  ]
 })
 export class AuthFeatureModule {}

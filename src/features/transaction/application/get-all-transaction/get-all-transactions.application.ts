@@ -15,10 +15,10 @@ export class GetAllTransactionsApplication implements IGetAllTransactionsApplica
   public execute(req: RequestModel): Promise<Transaction[]> {
     const { walletId } = req.user;
     return this.transactionRepository.findAll( 
-      { $or: [ { walletFromId: walletId }, { walletToId: walletId } ] }, 
+      { $or: [ { walletFromId: walletId as string }, { walletToId: walletId as string } ] }, 
       [
         {path: 'tokenId'}, 
-        {path: 'transactionTypeId'}
+        {path: 'transactionTypeId'},
       ]
     )
   }

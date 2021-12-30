@@ -1,3 +1,4 @@
+import { WalletModel } from '../../infrastructure/models/wallet.model';
 import { IBalances } from '../interfaces/balances.interface';
 
 export interface IWallet {
@@ -32,8 +33,11 @@ export class Wallet {
     return this.balances.reduce((acc, balance) => (acc += +balance.amount, acc), 0);
   }
 
-  static toEntity(model: any): Wallet {
+  static toEntity(model: WalletModel): Wallet | string {
     const { address, privateKey, _id, balances } = model;
+
+    const isString = typeof model === 'string';
+    if (isString) return String(model); 
 
     const walletEntity = new Wallet({
       address, 
